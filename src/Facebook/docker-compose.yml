@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  facebook:
+    image: facebook
+    build:
+      context: .
+      dockerfile: Dockerfile
