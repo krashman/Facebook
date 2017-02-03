@@ -6,4 +6,4 @@ services:
     volumes:
       - .:/src
     working_dir: /src
-    command: /bin/bash -c "dotnet restore && dotnet publish -c Release -o ./bin/Release/PublishOutput"
+    command: /bin/bash -c "dotnet restore && npm run build-production && dotnet publish -c Release -o ./bin/Release/PublishOutput"
