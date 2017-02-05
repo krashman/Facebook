@@ -1,17 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Facebook.Domain;
+using Microsoft.EntityFrameworkCore;
 
-namespace Facebook.Data
+namespace Facebook.Repository
 {
     public class FacebookContext : DbContext
     {
         public FacebookContext()
         {
-
         }
 
-        public FacebookContext(DbContextOptions<FacebookContext> options)
+        public FacebookContext(DbContextOptions options)
             : base(options)
-        { }
+        {
+        }
 
         public DbSet<User> Users { get; set; }
 

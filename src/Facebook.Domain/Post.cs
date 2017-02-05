@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace Facebook.Data
+namespace Facebook.Domain
 {
-    public class Post
+    public class Post : Entity
     {
-        public int PostId { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
 

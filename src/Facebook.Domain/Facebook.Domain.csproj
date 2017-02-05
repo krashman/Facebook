@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <AssemblyName>Facebook.Domain</AssemblyName>
+    <RootNamespace>Facebook.Domain</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Collections">
+      <HintPath>..\..\..\..\..\.nuget\packages\system.collections\4.3.0\ref\netstandard1.3\System.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\..\..\..\.nuget\packages\system.runtime\4.3.0\ref\netstandard1.5\System.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

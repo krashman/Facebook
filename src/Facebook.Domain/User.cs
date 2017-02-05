@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-namespace Facebook.Data
+namespace Facebook.Domain
 {
-    public class User
+    public class User : Entity
     {
-        public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
