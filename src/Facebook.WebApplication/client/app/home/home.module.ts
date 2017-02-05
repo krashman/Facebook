@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { HomeRoutes } from './home.routes';
 import { HomeComponent } from './home.component';
 
+import { MdlModule } from 'angular2-mdl';
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         HttpModule,
+        MdlModule,
         HomeRoutes
     ],
 
