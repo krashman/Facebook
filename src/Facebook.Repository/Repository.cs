@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Facebook.Repository
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : class
     {
         private readonly FacebookContext context;
         private readonly DbSet<T> entities;
@@ -25,7 +25,8 @@ namespace Facebook.Repository
 
         public T Get(Guid id)
         {
-            return entities.SingleOrDefault(s => s.Id == id);
+            throw new NotImplementedException();
+            //return entities.SingleOrDefault(s => s.Id == id);
         }
 
         public void Insert(T entity)

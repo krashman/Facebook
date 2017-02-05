@@ -77,7 +77,6 @@ namespace Facebook.WebApplication
             app.UseCors("AllowAllOrigins");
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

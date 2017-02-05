@@ -4,7 +4,7 @@ using Facebook.Domain;
 
 namespace Facebook.Repository
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         T Get(Guid id);

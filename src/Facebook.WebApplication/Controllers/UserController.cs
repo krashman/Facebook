@@ -6,17 +6,17 @@ namespace Facebook.WebApplication.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _thingsRepository;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(IUserRepository thingsRepository)
+        public UserController(IUserRepository userRepository)
         {
-            _thingsRepository = thingsRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_thingsRepository.GetAll());
+            return Ok(_userRepository.GetAll());
         }
     }
 }
