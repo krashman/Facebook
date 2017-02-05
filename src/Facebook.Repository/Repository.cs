@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Facebook.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace Facebook.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private readonly FacebookContext context;
+        private readonly FacebookDatabaseContext databaseContext;
         private readonly DbSet<T> entities;
         private string errorMessage = string.Empty;
 
-        public Repository(FacebookContext context)
+        public Repository(FacebookDatabaseContext databaseContext)
         {
-            this.context = context;
-            entities = context.Set<T>();
+            this.databaseContext = databaseContext;
+            entities = databaseContext.Set<T>();
         }
 
         public IEnumerable<T> GetAll()
@@ -34,14 +33,14 @@ namespace Facebook.Repository
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
             entities.Add(entity);
-            context.SaveChanges();
+            databaseContext.SaveChanges();
         }
 
         public void Update(T entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
-            context.SaveChanges();
+            databaseContext.SaveChanges();
         }
 
         public void Delete(T entity)
@@ -49,7 +48,7 @@ namespace Facebook.Repository
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
             entities.Remove(entity);
-            context.SaveChanges();
+            databaseContext.SaveChanges();
         }
 
         public void Remove(T entity)
@@ -61,7 +60,7 @@ namespace Facebook.Repository
 
         public void SaveChanges()
         {
-            context.SaveChanges();
+            databaseContext.SaveChanges();
         }
     }
 }

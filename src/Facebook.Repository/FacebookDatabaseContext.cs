@@ -1,20 +1,21 @@
 ﻿using Facebook.Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Facebook.Repository
 {
-    public class FacebookContext : DbContext
+    public class FacebookDatabaseContext : IdentityDbContext<IdentityUser>
     {
-        public FacebookContext()
+        public FacebookDatabaseContext()
         {
         }
 
-        public FacebookContext(DbContextOptions options)
+        public FacebookDatabaseContext(DbContextOptions options)
             : base(options)
         {
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Maybeh { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

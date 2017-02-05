@@ -4,7 +4,7 @@ namespace Facebook.Repository
 {
     public class UserRepository : Repository<User> , IUserRepository
     {
-        public UserRepository(FacebookContext context) : base(context)
+        public UserRepository(FacebookDatabaseContext databaseContext) : base(databaseContext)
         {
         }
     }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Facebook.Domain;
 using Facebook.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -45,8 +47,11 @@ namespace Facebook.WebApplication
             // Add framework services. 
             const string connection =
                 @"Server=(localdb)\mssqllocaldb;Database=EFGetStarted.AspNetCore.NewDb;Trusted_Connection=True;";
-            services.AddDbContext<FacebookContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<FacebookDatabaseContext>(options => options.UseSqlServer(connection));
 
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                    .AddEntityFrameworkStores<FacebookDatabaseContext>()
+                    .AddDefaultTokenProviders();
             services.AddSingleton<IUserRepository, UserRepository>();
 
         }

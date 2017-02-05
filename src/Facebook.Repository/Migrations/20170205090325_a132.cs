@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Facebook.Repository.Migrations
 {
-    public partial class A : Migration
+    public partial class a132 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Maybeh",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -18,7 +18,7 @@ namespace Facebook.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Maybeh", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,9 +34,9 @@ namespace Facebook.Repository.Migrations
                 {
                     table.PrimaryKey("PK_Post", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Post_Users_UserId",
+                        name: "FK_Post_Maybeh_UserId",
                         column: x => x.UserId,
-                        principalTable: "Users",
+                        principalTable: "Maybeh",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -53,7 +53,7 @@ namespace Facebook.Repository.Migrations
                 name: "Post");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Maybeh");
         }
     }
 }
