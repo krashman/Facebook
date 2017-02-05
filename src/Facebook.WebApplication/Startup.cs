@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Facebook.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -40,7 +42,11 @@ namespace Facebook
 
             // Add framework services. 
             // services.AddSingleton<IThingsRepository, ThingsRepository>();
-            // services.AddMvc();
+            services.AddMvc();
+
+            const string connection = @"Server=(localdb)\mssqllocaldb;Database=EFGetStarted.AspNetCore.NewDb;Trusted_Connection=True;";
+            services.AddDbContext<FacebookContext>(options => options.UseSqlServer(connection));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +59,7 @@ namespace Facebook
                  "/home",
                  "/about"
              };
-
+                    
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path.HasValue && null != angularRoutes.FirstOrDefault(
@@ -66,7 +72,6 @@ namespace Facebook
             });
 
             app.UseCors("AllowAllOrigins");
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
         }
