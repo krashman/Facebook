@@ -11,15 +11,15 @@ form {
     padding:24px;
     text-align: center;
 }
-
-.submit-btn { 
-    float:right;
-}
-
+    
 form:after {
     content: ".";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden;
+}
+
+.submit-btn { 
+    float:right;
 }

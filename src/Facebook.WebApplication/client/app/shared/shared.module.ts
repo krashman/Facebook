@@ -2,7 +2,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation.component';
-
+import { UserService } from './index';
 @NgModule({
 
     imports: [
@@ -16,7 +16,9 @@ import { NavigationComponent } from './navigation.component';
 
     exports: [
         NavigationComponent
-    ]
+    ],
+
+    providers: [UserService]
 })
 
 export class SharedModule {

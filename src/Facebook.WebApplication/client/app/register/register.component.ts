@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 
-
+import { UserService, User } from '../shared';
 const emailValidator = Validators.pattern('^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$');
 
 @Component({
@@ -17,12 +17,8 @@ export class RegisterComponent implements OnInit {
     public lastName = new FormControl('');
     public email = new FormControl('', emailValidator);
     public password = new FormControl('');
-    ngOnInit() {
 
-    }
-    
-    
-    constructor(private fb: FormBuilder) {
+    constructor(private fb: FormBuilder, private userService: UserService) {
         this.form = fb.group({
             'firstName': this.firstName,
             'lastName': this.lastName,
@@ -31,8 +27,23 @@ export class RegisterComponent implements OnInit {
         });
     }
 
+    ngOnInit() {
+
+    }
+
     public onSubmit() {
         console.log(this.form);
+        let model : User = { password: this.password.value, email: this.email.value};
+        this.userService.create(model)
+            .subscribe(
+            data => {
+                console.log('success');
+                // this.alertService.success('Registration successful', true);
+                // this.router.navigate(['/login']);
+            },
+            error => {
+                console.log(error);
+            });
     }
 
     public onDisableForm(formDisabled: boolean) {

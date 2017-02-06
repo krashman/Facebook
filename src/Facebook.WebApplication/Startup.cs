@@ -65,7 +65,8 @@ namespace Facebook.WebApplication
             var angularRoutes = new[]
             {
                 "/home",
-                "/about"
+                "/about",
+                "/register"
             };
 
             app.Use(async (context, next) =>
