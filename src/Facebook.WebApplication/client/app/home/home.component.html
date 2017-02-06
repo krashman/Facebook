@@ -1,59 +1,30 @@
-<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed>
-    <mdl-layout-header>
-        <mdl-layout-header-row>
-            <mdl-layout-title>Title</mdl-layout-title>
-            <mdl-layout-spacer></mdl-layout-spacer>
-            <!-- Navigation. We hide it in small screens. -->
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link">Link</a>
-            </nav>
-        </mdl-layout-header-row>
-    </mdl-layout-header>
-    <mdl-layout-drawer>
-        <mdl-layout-title>Title</mdl-layout-title>
-        <nav class="mdl-navigation">
-            <a class="mdl-navigation__link">Link</a>
-        </nav>
-    </mdl-layout-drawer>
-    <mdl-layout-content class="demo-content">
-
-
+<div class="mdl-grid">
+    <form [formGroup]="form">
         <p>
-            <button mdl-button mdl-button-type="fab" mdl-colored="primary" mdl-ripple>
-                <mdl-icon>add</mdl-icon>
-            </button>
+            <mdl-textfield label="First Name" type="text" formControlName="firstName" floating-label></mdl-textfield>
+        </p>
+        <p>
+            <mdl-textfield label="Last Name" type="text" formControlName="lastName" floating-label></mdl-textfield>
         </p>
 
         <p>
-            <button mdl-button mdl-button-type="raised" mdl-colored="accent" mdl-ripple>
-                Button
-            </button>
+            <mdl-textfield label="Email"
+                           name="email"
+                           type="text"
+                           formControlName="email"
+                           floating-label
+                           pattern="^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$"
+                           error-msg="Please provide a correct email!"></mdl-textfield>
         </p>
-
         <p>
-            <mdl-icon mdl-badge="1" mdl-badge-overlap>account_box</mdl-icon>
-        </p>
 
-        <p>
-            <mdl-spinner single-color active></mdl-spinner>
+            <mdl-textfield label="Password"
+                           name="password"
+                           type="password"
+                           formControlName="password"
+                           floating-label></mdl-textfield>
         </p>
+        <button mdl-button (click)="onSubmit()" [disabled]="!form.valid" mdl-button-type="raised" mdl-ripple mdl-colored="primary">Submit</button>
 
-        <p>
-            <mdl-textfield type="text" label="Text..." [(ngModel)]="text3" floating-label></mdl-textfield>
-        </p>
-
-        <p>
-            <mdl-checkbox [mdl-ripple]="true" [(ngModel)]="checkbox1"> Checkbox </mdl-checkbox>
-        </p>
-
-        <p>
-            <mdl-radio name="group1" value="1" [(ngModel)]="radioOption" mdl-ripple>Value 1</mdl-radio>
-            <mdl-radio name="group1" value="2" [(ngModel)]="radioOption" mdl-ripple>Value 2</mdl-radio>
-        </p>
-
-        <p>
-            <mdl-switch [(ngModel)]="checkbox1" mdl-ripple>Option 1</mdl-switch>
-        </p>
-
-    </mdl-layout-content>
-</mdl-layout>
+    </form>
+</div>

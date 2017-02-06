@@ -7,13 +7,14 @@ import { SharedModule } from './shared/shared.module';
 import { HomeModule } from './home/home.module';
 import { AboutModule } from './+about/about.module';
 import { AppRoutes } from './app.routes';
-
+import { MdlModule } from 'angular2-mdl';
 import { AppComponent } from './app.component';
 
 @NgModule({
     imports: [
         BrowserModule,
         AppRoutes,
+        MdlModule,
         SharedModule.forRoot(),
         HomeModule,
         AboutModule

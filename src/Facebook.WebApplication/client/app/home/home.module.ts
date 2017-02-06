@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeRoutes } from './home.routes';
 import { HomeComponent } from './home.component';
-
 import { MdlModule } from 'angular2-mdl';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         MdlModule,
         HomeRoutes
