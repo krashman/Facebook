@@ -9,6 +9,7 @@ import { AboutModule } from './+about/about.module';
 import { AppRoutes } from './app.routes';
 import { MdlModule } from 'angular2-mdl';
 import { AppComponent } from './app.component';
+import { RegisterModule } from './register/register.module';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import { AppComponent } from './app.component';
         MdlModule,
         SharedModule.forRoot(),
         HomeModule,
-        AboutModule
+        AboutModule,
+        RegisterModule
     ],
 
     declarations: [

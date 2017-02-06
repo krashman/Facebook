@@ -1,0 +1,21 @@
+<mdl-layout>
+    <mdl-layout-content>
+        <div class="mdl-grid">
+            <div class="mdl-layout-spacer"></div>
+            <div class="mdl-cell mdl-cell--3-col">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <form [formGroup]="form" mdl-shadow="2">
+                        <mdl-textfield label="First Name" type="text" formControlName="firstName" floating-label></mdl-textfield>
+                        <mdl-textfield label="Last Name" type="text" formControlName="lastName" floating-label></mdl-textfield>
+                        <mdl-textfield label="Email" name="email" type="text" formControlName="email" floating-label pattern="^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$"
+                            error-msg="Please provide a correct email!"></mdl-textfield>
+                            <mdl-textfield label="Password" name="password" type="password" formControlName="password" floating-label></mdl-textfield>
+                            <button class="submit-btn" mdl-button (click)="onSubmit()" [disabled]="!form.valid" mdl-button-type="raised" mdl-ripple mdl-colored="primary">Submit</button>
+
+                    </form>
+                </div>
+            </div>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </mdl-layout-content>
+</mdl-layout>

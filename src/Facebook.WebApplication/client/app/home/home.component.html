@@ -1,30 +1,17 @@
-<div class="mdl-grid">
-    <form [formGroup]="form">
-        <p>
-            <mdl-textfield label="First Name" type="text" formControlName="firstName" floating-label></mdl-textfield>
-        </p>
-        <p>
-            <mdl-textfield label="Last Name" type="text" formControlName="lastName" floating-label></mdl-textfield>
-        </p>
-
-        <p>
-            <mdl-textfield label="Email"
-                           name="email"
-                           type="text"
-                           formControlName="email"
-                           floating-label
-                           pattern="^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$"
-                           error-msg="Please provide a correct email!"></mdl-textfield>
-        </p>
-        <p>
-
-            <mdl-textfield label="Password"
-                           name="password"
-                           type="password"
-                           formControlName="password"
-                           floating-label></mdl-textfield>
-        </p>
-        <button mdl-button (click)="onSubmit()" [disabled]="!form.valid" mdl-button-type="raised" mdl-ripple mdl-colored="primary">Submit</button>
-
-    </form>
-</div>
+<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed>
+    <mdl-layout-header>
+        <mdl-layout-header-row>
+            <mdl-layout-title>Title</mdl-layout-title>
+            <mdl-layout-spacer></mdl-layout-spacer>
+            <!-- Navigation. We hide it in small screens. -->
+            <navigation></navigation>
+        </mdl-layout-header-row>
+    </mdl-layout-header>
+    <mdl-layout-drawer>
+        <mdl-layout-title>Title</mdl-layout-title>
+        <navigation></navigation>
+    </mdl-layout-drawer>
+    <mdl-layout-content>
+        <router-outlet></router-outlet>
+    </mdl-layout-content>
+</mdl-layout>
