@@ -1,0 +1,15 @@
+language: csharp
+dist: trusty
+sudo: required
+mono: none
+dotnet: 1.0.0-preview2-003131
+
+cache:
+  directories:
+    - node_modules
+    - $HOME/.pub-cache
+
+node_js:
+  - '6.9.1'
+script:
+  - ./build.sh --quiet verify
