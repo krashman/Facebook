@@ -1,4 +1,4 @@
-// Entry point for AoT compilation.
+// Entry point for AoT compilation.   
 
 declare var System: any;
 
