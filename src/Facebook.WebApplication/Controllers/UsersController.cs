@@ -52,7 +52,7 @@ namespace Facebook.WebApplication.Controllers
                     //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return RedirectToLocal("/");
+                    return Redirect("/");
                 }
                 return Ok(model);
             }

@@ -45,15 +45,52 @@ namespace Facebook.WebApplication
             services.AddMvc();
 
             // Add framework services. 
-            const string connection =
-                @"Server=(localdb)\mssqllocaldb;Database=EFGetStarted.AspNetCore.NewDb;Trusted_Connection=True;";
+            const string connection = @"Server=localhost;Database=Facebook;Trusted_Connection=True;";
             services.AddDbContext<FacebookDatabaseContext>(options => options.UseSqlServer(connection));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                     .AddEntityFrameworkStores<FacebookDatabaseContext>()
                     .AddDefaultTokenProviders();
-            services.AddSingleton<IUserRepository, UserRepository>();
 
+
+            // Identity options.
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+            });
+
+            // Claims-Based Authorization: role claims.
+            services.AddAuthorization(options =>
+            {
+                // Policy for dashboard: only administrator role.
+                options.AddPolicy("Manage Accounts", policy => policy.RequireClaim("role", "administrator"));
+                // Policy for resources: user or administrator role. 
+                options.AddPolicy("Access Resources", policyBuilder => policyBuilder.RequireAssertion(
+                        context => context.User.HasClaim(claim => (claim.Type == "role" && claim.Value == "user")
+                           || (claim.Type == "role" && claim.Value == "administrator"))
+                    )
+                );
+            });
+
+            // Adds IdentityServer.
+            // The AddTemporarySigningCredential extension creates temporary key material for signing tokens on every start.
+            // Again this might be useful to get started, but needs to be replaced by some persistent key material for production scenarios.
+            // See the cryptography docs for more information: http://docs.identityserver.io/en/release/topics/crypto.html#refcrypto
+            services.AddIdentityServer()
+                .AddTemporarySigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddAspNetIdentity<IdentityUser>(); // IdentityServer4.AspNetIdentity.
+
+
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddTransient<IDbService, DbService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,12 +120,28 @@ namespace Facebook.WebApplication
             app.UseCors("AllowAllOrigins");
             app.UseDefaultFiles();
             app.UseStaticFiles();
+            app.UseIdentity();
+            app.UseIdentityServer();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.PopulateDb();
+
+        }
+    }
+
+    public static class DbExtensions
+    {
+        // Adds the extension method.
+        public static async void PopulateDb(this IApplicationBuilder app)
+        {
+            // Uses app.ApplicationServices to access to the DI container(the IServiceProvider),
+            // and gets the instance of the DbService to populate db.
+            var dbService = app.ApplicationServices.GetRequiredService<IDbService>();
+            await dbService.populate();
         }
     }
 }
