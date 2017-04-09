@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-production":"ng build --prod && dotnet publish -c Release"
+    "build-production":"npm install && ng build --prod && dotnet publish -c Release"
   },
   "private": true,
   "dependencies": {
