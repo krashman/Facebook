@@ -1,0 +1,18 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "files.exclude": {
+        "Controllers": true,
+        "**.cs*": true,
+
+        "bin": true,
+
+        "Properties": true,
+        "obj": true,
+        "web.config": true,
+        "**/.DS_Store": true,
+        "**/*.js.map": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        }
+    }
+}
