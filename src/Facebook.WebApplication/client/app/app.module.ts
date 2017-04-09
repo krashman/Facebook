@@ -5,11 +5,11 @@ import { HttpModule } from '@angular/http';
 
 import { HomeModule } from './home/home.module';
 import { RegisterModule } from './register/register.module';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
-
+import { MaterialModule } from './material.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -17,12 +17,15 @@ import { AppComponent } from './app.component';
   imports: [
     AppRoutes,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
     HomeModule,
-    RegisterModule
+    RegisterModule,
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
