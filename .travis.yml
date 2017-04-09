@@ -12,6 +12,6 @@ before_script:
   - chmod a+x ./build.sh
   
 node_js:
-  - '6.9.1'
+  - "7"
 script:
   - ./build.sh --quiet verify
