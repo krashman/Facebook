@@ -4,8 +4,6 @@ import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeRoutes } from './home.routes';
 import { HomeComponent } from './home.component';
-import { MdlModule } from 'angular2-mdl';
-
 import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
@@ -14,7 +12,6 @@ import { SharedModule } from '../shared/shared.module';
         FormsModule,
         ReactiveFormsModule,
         HttpModule,
-        MdlModule,
         HomeRoutes,
         SharedModule
     ],

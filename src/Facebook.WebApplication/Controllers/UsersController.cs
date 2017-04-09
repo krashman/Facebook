@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
+using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -45,6 +48,16 @@ namespace Facebook.WebApplication.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    var adminUser = await _userManager.FindByNameAsync(user.UserName);
+
+                    // Assigns claims.
+                    var claims = new List<Claim>
+                    {
+                        new Claim(type: JwtClaimTypes.GivenName, value: "hello"),
+                        new Claim(type: JwtClaimTypes.FamilyName, value: "world"),
+                    };
+
+                    await _userManager.AddClaimsAsync(user, claims);
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
                     // Send an email with this link
                     //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

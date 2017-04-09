@@ -6,3 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
+  facebook.identityprovider:
+    image: facebook.identityprovider
+    build:
+      context: ./../Facebook.IdentityProvider
+      dockerfile: Dockerfile

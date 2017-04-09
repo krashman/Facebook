@@ -117,6 +117,15 @@ namespace Facebook.WebApplication
                 await next();
             });
 
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = "http://localhost:5001/",
+                //Authority = "http://angularspawebapi.azurewebsites.net",
+                AllowedScopes = { "WebAPI" },
+
+                RequireHttpsMetadata = false
+            });
+
             app.UseCors("AllowAllOrigins");
             app.UseDefaultFiles();
             app.UseStaticFiles();
