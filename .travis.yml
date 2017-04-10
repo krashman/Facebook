@@ -6,13 +6,13 @@ matrix:
     - os: osx
       dotnet: 1.0.0
       mono: none
-      env: DOTNETCORE=1
+      env: DOTNETCORE=1;TRAVIS_NODE_VERSION="6.10.2"
     - os: linux
       dist: trusty
       sudo: required
       dotnet: 1.0.0
       mono: none
-      env: DOTNETCORE=1
+      env: DOTNETCORE=1;TRAVIS_NODE_VERSION="6.10.2"
 
 env:
   - TRAVIS_NODE_VERSION="6.10.2"
