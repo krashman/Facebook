@@ -2,7 +2,7 @@ language: csharp
 dist: trusty
 sudo: required
 mono: none
-dotnet: 1.0.0-preview2-003177
+dotnet: 1.0.0-preview2-003131
 
 env:
   - TRAVIS_NODE_VERSION="6.10.2"
@@ -18,7 +18,5 @@ cache:
 before_script:
   - chmod a+x ./build.sh
   
-node_js:
-  - "7"
 script:
   - ./build.sh --quiet verify
