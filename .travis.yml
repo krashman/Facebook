@@ -1,8 +1,18 @@
-language: csharp
-dist: trusty
-sudo: required
-mono: none
-dotnet: 1.0.0-preview2-003131
+language: 
+solution: Facebook.sln
+
+matrix:
+  include:
+    - os: osx
+      dotnet: 1.0.0
+      mono: none
+      env: DOTNETCORE=1
+    - os: linux
+      dist: trusty
+      sudo: required
+      dotnet: 1.0.0
+      mono: none
+      env: DOTNETCORE=1
 
 env:
   - TRAVIS_NODE_VERSION="6.10.2"
