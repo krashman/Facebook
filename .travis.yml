@@ -16,8 +16,9 @@ matrix:
 
 install:
   - export DOTNET_INSTALL_DIR="$PWD/.dotnetcli"
-  - curl -sSL https://raw.githubusercontent.com/dotnet/cli/rel/1.0.0/scripts/obtain/dotnet-install.sh | bash /dev/stdin --install-dir "$DOTNET_INSTALL_DIR"
-  - export PATH="$DOTNET_INSTALL_DIR:$PATH"
+  - sudo sh -c 'echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/dotnet-release/ trusty main" > /etc/apt/sources.list.d/dotnetdev.list'
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 417A0893
+sudo apt-get update
   - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
   - source ~/.nvm/nvm.sh
   - nvm install $TRAVIS_NODE_VERSION
