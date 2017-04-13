@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Facebook.Domain
 {

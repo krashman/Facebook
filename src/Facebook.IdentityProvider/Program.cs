@@ -17,7 +17,6 @@ namespace Facebook.IdentityProvider
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .UseUrls("http://localhost:5001/")
                 .Build();
 
             host.Run();

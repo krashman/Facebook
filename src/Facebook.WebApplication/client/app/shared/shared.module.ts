@@ -3,11 +3,38 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation.component';
 import { UserService } from './index';
+
+import {
+    MdButtonModule,
+    MdSnackBarModule,
+    MdCardModule,
+    MdInputModule,
+    MdCheckboxModule,
+    MdIconModule,
+    MdSidenavModule,
+    MdSelectModule,
+    MdToolbarModule,
+    MdListModule,
+    MdProgressBarModule,
+    MdProgressSpinnerModule
+} from '@angular/material';
 @NgModule({
 
     imports: [
         CommonModule,
-        RouterModule
+        RouterModule,
+        MdButtonModule,
+        MdSnackBarModule,
+        MdCardModule,
+        MdInputModule,
+        MdCheckboxModule,
+        MdIconModule,
+        MdSidenavModule,
+        MdSelectModule,
+        MdToolbarModule,
+        MdListModule,
+        MdProgressBarModule,
+        MdProgressSpinnerModule
     ],
 
     declarations: [
@@ -15,7 +42,19 @@ import { UserService } from './index';
     ],
 
     exports: [
-        NavigationComponent
+        NavigationComponent,
+        MdButtonModule,
+        MdSnackBarModule,
+        MdCardModule,
+        MdInputModule,
+        MdCheckboxModule,
+        MdIconModule,
+        MdSidenavModule,
+        MdSelectModule,
+        MdToolbarModule,
+        MdListModule,
+        MdProgressBarModule,
+        MdProgressSpinnerModule
     ],
 
     providers: [UserService]
