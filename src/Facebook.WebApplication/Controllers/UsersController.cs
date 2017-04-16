@@ -42,35 +42,30 @@ namespace Facebook.WebApplication.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] User model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new IdentityUser {UserName = model.Email, Email = model.Email};
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var adminUser = await _userManager.FindByNameAsync(user.UserName);
+            if (!ModelState.IsValid) return BadRequest();
 
-                    // Assigns claims.
-                    var claims = new List<Claim>
-                    {
-                        new Claim(type: JwtClaimTypes.GivenName, value: "hello"),
-                        new Claim(type: JwtClaimTypes.FamilyName, value: "world"),
-                    };
+            var user = new IdentityUser {UserName = model.Email, Email = model.Email};
+            var result = await _userManager.CreateAsync(user, model.Password);
 
-                    await _userManager.AddClaimsAsync(user, claims);
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return Redirect("/");
-                }
-                return Ok(model);
-            }
-            return BadRequest();
+            if (!result.Succeeded) return Ok(model);
+            
+            // Assigns claims.
+            //var claims = new List<Claim>
+            //{
+            //    new Claim(type: JwtClaimTypes.GivenName, value: "hello"),
+            //    new Claim(type: JwtClaimTypes.FamilyName, value: "world"),
+            //};
+
+            //await _userManager.AddClaimsAsync(user, claims);
+            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=532713
+            // Send an email with this link
+            //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
+            //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
+            //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+            //await _signInManager.SignInAsync(user, isPersistent: false);
+            return new JsonResult(user);
         }
         
-    }
+    }  
 }
