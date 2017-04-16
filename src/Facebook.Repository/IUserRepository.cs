@@ -1,8 +1,8 @@
-﻿using Facebook.Domain;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Facebook.Repository
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<IdentityUser>
     {
     }
 }

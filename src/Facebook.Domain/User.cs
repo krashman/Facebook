@@ -13,5 +13,7 @@ namespace Facebook.Domain
         public string Password { get; set; }
 
         public List<Post> Posts { get; set; }
+
+        public string Birthday { get; set; }
     }
 }

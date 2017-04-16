@@ -35,7 +35,7 @@ namespace Facebook.WebApplication.Controllers
             {
                 return NotFound();
             }
-            return Ok(_userRepository.GetAll());
+            return Ok();
         }
         
         [HttpPost]
@@ -47,7 +47,7 @@ namespace Facebook.WebApplication.Controllers
             var user = new IdentityUser {UserName = model.Email, Email = model.Email};
             var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded) return Ok(model);
+            return new JsonResult(result);
             
             // Assigns claims.
             //var claims = new List<Claim>
@@ -64,7 +64,6 @@ namespace Facebook.WebApplication.Controllers
             //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
             //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
             //await _signInManager.SignInAsync(user, isPersistent: false);
-            return new JsonResult(user);
         }
         
     }  
