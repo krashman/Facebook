@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { UserService, User } from '../core';
+import { AuthenticationService, User } from '../core';
 const emailValidator = Validators.pattern('^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$');
 
 @Component({
@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit {
     public email = new FormControl('', emailValidator);
     public password = new FormControl('');
 
-    constructor(private router: Router, private fb: FormBuilder, private userService: UserService) {
+    constructor(private router: Router, private fb: FormBuilder, private authenticationService: AuthenticationService) {
         this.form = fb.group({
             'firstName': this.firstName,
             'lastName': this.lastName,
@@ -37,12 +37,18 @@ export class RegisterComponent implements OnInit {
     public onSubmit() {
         console.log(this.form);
         let model: User = { firstName: this.firstName.value, lastName: this.lastName.value, password: this.password.value, email: this.email.value, birthday: this.birthday.value };
-        this.userService.create(model)
+        this.authenticationService.create(model)
             .subscribe(
             res => {
                 if (res.succeeded) {
-                    this.router.navigate(["/"]);
-                    console.log('success');
+                    this.authenticationService.signin(model.email, model.password).subscribe(() => {
+                        
+                        this.router.navigate(["/"]);
+                        console.log('success');
+
+                    },
+                        err => {
+                        });
                 }
                 else {
                     this.errorMessages = res.errors;

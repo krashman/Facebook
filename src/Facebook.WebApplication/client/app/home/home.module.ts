@@ -4,7 +4,7 @@ import { HttpModule } from '@angular/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeRoutes } from './home.routes';
 import { HomeComponent } from './home.component';
-import { SharedModule } from '../shared/shared.module';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import { SharedModule } from '../shared/shared.module';
         ReactiveFormsModule,
         HttpModule,
         HomeRoutes,
-        SharedModule
+        CoreModule
     ],
 
     declarations: [

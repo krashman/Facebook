@@ -2,7 +2,19 @@ import { RouterModule } from '@angular/router';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation.component';
-import { UserService } from './index';
+import { AuthenticationService } from './index';
+import { AuthConfig, AuthHttp } from 'angular2-jwt';
+import { Http } from '@angular/http';
+
+
+//TODO: Move somewhere including http object
+// Set tokenGetter to use the same storage in AuthenticationService.Helpers.
+export function getAuthHttp(http: Http) {
+    return new AuthHttp(new AuthConfig({
+        noJwtError: true,
+        tokenGetter: (() => localStorage.getItem('id_token'))
+    }), http);
+}
 
 import {
     MdButtonModule,
@@ -57,13 +69,20 @@ import {
         MdProgressSpinnerModule
     ],
 
-    providers: [UserService]
+    providers: [
+        AuthHttp,
+        AuthenticationService,
+        {
+            provide: AuthHttp,
+            useFactory: getAuthHttp,
+            deps: [Http]
+        }]
 })
 
-export class SharedModule {
+export class CoreModule {
     static forRoot(): ModuleWithProviders {
         return {
-            ngModule: SharedModule,
+            ngModule: CoreModule,
             providers: [
             ]
         };

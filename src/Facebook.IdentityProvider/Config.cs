@@ -37,7 +37,7 @@ namespace Facebook.WebApplication
                 // http://docs.identityserver.io/en/dev/reference/client.html.
                 new Client
                 {
-                    ClientId = "AngularSPA",
+                    ClientId = "Facebook",
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword, // Resource Owner Password Credential grant.
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false, // This client does not need a secret to request tokens from the token endpoint.
