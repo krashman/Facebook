@@ -1,7 +1,6 @@
 ﻿import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-
 import { UserService, User } from '../shared';
 const emailValidator = Validators.pattern('^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$');
 
@@ -19,7 +18,7 @@ export class RegisterComponent implements OnInit {
     public email = new FormControl('', emailValidator);
     public password = new FormControl('');
 
-    constructor(private fb: FormBuilder, private userService: UserService) {
+    constructor(private router: Router, private fb: FormBuilder, private userService: UserService) {
         this.form = fb.group({
             'firstName': this.firstName,
             'lastName': this.lastName,
@@ -41,7 +40,8 @@ export class RegisterComponent implements OnInit {
         this.userService.create(model)
             .subscribe(
             res => {
-                if (res.success) {
+                if (res.succeeded) {
+                    this.router.navigate(["/"]);
                     console.log('success');
                 }
                 else {
