@@ -4,15 +4,4 @@
     <AssemblyName>Facebook.Domain</AssemblyName>
     <RootNamespace>Facebook.Domain</RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore">
-      <HintPath>..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.identity.entityframeworkcore\1.1.0\lib\netstandard1.3\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections">
-      <HintPath>..\..\..\..\..\.nuget\packages\system.collections\4.3.0\ref\netstandard1.3\System.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime">
-      <HintPath>..\..\..\..\..\.nuget\packages\system.runtime\4.3.0\ref\netstandard1.5\System.Runtime.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>
