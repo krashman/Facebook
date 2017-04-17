@@ -2,7 +2,7 @@
 using IdentityServer4;
 using IdentityServer4.Models;
 
-namespace Facebook.WebApplication
+namespace Facebook.IdentityProvider
 {
     public class Config
     {
@@ -22,7 +22,7 @@ namespace Facebook.WebApplication
         {
             return new List<ApiResource>
             {
-                new ApiResource("WebAPI" ) {
+                new ApiResource("WebAPI") {
                     UserClaims = { "role" }
                 }
             };
