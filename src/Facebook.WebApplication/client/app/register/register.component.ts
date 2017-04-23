@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit {
             .subscribe(
             res => {
                 if (res.succeeded) {
-                    this.authenticationService.signin(model.email, model.password).subscribe(() => {
+                    this.authenticationService.signIn(model.email, model.password).subscribe(() => {
                         
                         this.router.navigate(["/"]);
                         console.log('success');

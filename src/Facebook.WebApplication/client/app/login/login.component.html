@@ -1,16 +1,17 @@
-
-
 <div style="margin:0 auto; max-width:600px;padding:30px;">
-    <md-card>
-        <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-            <md-input-container class="example-full-width">
-                <input mdInput placeholder="Email address" formControlName="email" >
-            </md-input-container>
+  <md-card>
+    <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <md-input-container class="example-full-width">
+        <input mdInput placeholder="Email address" formControlName="email">
+      </md-input-container>
 
-            <md-input-container class="example-full-width">
-                <input mdInput placeholder="Password" type="password" formControlName="password" >
-            </md-input-container>
-
-        </form>
-    </md-card>
+      <md-input-container class="example-full-width">
+        <input mdInput placeholder="Password" type="password" formControlName="password">
+      </md-input-container>
+      <div class="example-full-width" style="padding-top:30px; display:flex">
+        <div style="flex: 1 auto"></div>
+        <button md-raised-button type="submit" color="accent">Login</button>
+      </div>
+    </form>
+  </md-card>
 </div>

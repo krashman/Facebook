@@ -50,7 +50,7 @@ export class AuthenticationService {
         return body;
     }
 
-    public signin(username: string, password: string): Observable<any> {
+    public signIn(username: string, password: string): Observable<any> {
         let tokenEndpoint: string = environment.TOKEN_ENDPOINT;
 
         let params: any = {
