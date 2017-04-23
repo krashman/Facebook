@@ -7,12 +7,12 @@ import { RegisterModule } from './register/register.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
-import { MaterialModule } from './material.module';
-
+import { MaterialModule } from './core/material.module';
+import { LoginModule } from './login/login.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AppRoutes,
@@ -22,6 +22,7 @@ import { MaterialModule } from './material.module';
     HttpModule,
     HomeModule,
     RegisterModule,
+    LoginModule,
     MaterialModule
   ],
   providers: [],
