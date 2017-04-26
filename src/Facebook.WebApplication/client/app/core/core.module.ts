@@ -5,7 +5,7 @@ import { NavigationComponent } from './navigation.component';
 import { AuthenticationService } from './index';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { Http } from '@angular/http';
-
+import { AuthenticationGuard } from './services/authentication.guard';
 
 //TODO: Move somewhere including http object
 // Set tokenGetter to use the same storage in AuthenticationService.Helpers.
@@ -70,12 +70,13 @@ import {
     ],
 
     providers: [
+        AuthenticationGuard,
         AuthHttp,
         AuthenticationService,
         {
             provide: AuthHttp,
             useFactory: getAuthHttp,
-            deps: [Http]
+            deps: [Http],
         }]
 })
 

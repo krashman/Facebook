@@ -28,11 +28,16 @@ export class LoginComponent implements OnInit {
     console.log(this.form);
     let model: User = { password: this.password.value, email: this.email.value };
     this.authenticationService.signIn(model.email, model.password).subscribe(res => {
-      if (this.authenticationService.signinSubject.getValue()) {
-        this.router.navigate(["/"]);
-        console.log('success');
+      // Gets the redirect URL from authentication service.
+      // If no redirect has been set, uses the default.
+      let redirect: string = this.authenticationService.redirectUrl
+        ? this.authenticationService.redirectUrl
+        : '/home';
 
-      }
+      // Redirects the user.
+      this.router.navigate([redirect]);
+    }, err => {
+      console.error(err);
     })
   }
 

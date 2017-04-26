@@ -9,6 +9,8 @@ import { User } from '../models/index';
 
 @Injectable()
 export class AuthenticationService {
+    redirectUrl: string;
+
     constructor(private http: Http, private authHttp: AuthHttp) {
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         this.options = new RequestOptions({ headers: this.headers });
