@@ -9,7 +9,6 @@ import { AppRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './core/material.module';
 import { LoginModule } from './login/login.module';
-import { AuthenticationGuard } from './core/services/authentication.guard';
 import { CoreModule } from './core/core.module';
 
 @NgModule({

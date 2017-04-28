@@ -52,6 +52,54 @@ export class AuthenticationService {
         return body;
     }
 
+    /**
+     * Checks if user is signed in.
+     */
+    public isSignedIn(): Observable<boolean> {
+        return this.signinSubject.asObservable();
+    }
+
+    public signOut(): void {
+        this.redirectUrl = null;
+
+        this.signinSubject.next(false);
+        console.log(this.signinSubject.getValue());
+        this.userSubject.next({});
+        this.rolesSubject.next([]);
+
+        //  this.unscheduleRefresh();
+
+        this.revokeToken();
+        this.revokeRefreshToken();
+    }
+
+    private revokeToken() {
+        Helpers.removeToken('id_token');
+        Helpers.removeExp();
+
+    }
+
+    public revokeRefreshToken(): void {
+        let refreshToken: string = Helpers.getToken('refresh_token');
+
+        if (refreshToken) {
+            let revocationEndpoint: string = environment.REVOCATION_ENDPOINT;
+
+            let params: any = {
+                client_id: environment.CLIENT_ID,
+                token_type_hint: "refresh_token",
+                token: refreshToken
+            };
+
+            let body: string = this.encodeParams(params);
+
+            this.http.post(revocationEndpoint, body, this.options)
+                .subscribe(() => {
+                    Helpers.removeToken('refresh_token');
+                })
+        }
+    }
+
     public signIn(username: string, password: string): Observable<any> {
         let tokenEndpoint: string = environment.TOKEN_ENDPOINT;
 
