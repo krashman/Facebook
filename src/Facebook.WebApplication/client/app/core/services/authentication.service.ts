@@ -12,9 +12,15 @@ import { User } from '../models/index';
 export class AuthenticationService {
     redirectUrl: string;
 
-    constructor(private http: Http, private authHttp: AuthHttp) {
+    constructor(private http: Http, private authHttp: AuthHttp) {        // On bootstrap or refresh, tries to get users'data.
+        this.getUserInfo();
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         this.options = new RequestOptions({ headers: this.headers });
+    }
+
+
+    public getUser(): Observable<any> {
+        return this.userSubject.asObservable();
     }
 
 
@@ -70,14 +76,19 @@ export class AuthenticationService {
         this.redirectUrl = null;
 
         this.signinSubject.next(false);
-        this.refreshSubscription.unsubscribe();
         this.userSubject.next({});
         this.rolesSubject.next([]);
 
-        //  this.unscheduleRefresh();
+        this.unscheduleRefresh();
 
         this.revokeToken();
         this.revokeRefreshToken();
+    }
+
+    public unscheduleRefresh(): void {
+        if (this.refreshSubscription) {
+            this.refreshSubscription.unsubscribe();
+        }
     }
 
     /**
@@ -164,6 +175,9 @@ export class AuthenticationService {
 
                     // Tells all the subscribers about the new status.
                     this.signinSubject.next(true);
+
+                    // Optional strategy for refresh token through a scheduler.
+                    this.scheduleRefresh();
                 }
             }).catch((error: any) => {
                 // Checks for error in response (error from the Token endpoint).
@@ -210,6 +224,7 @@ export class AuthenticationService {
             );
         });
     }
+
 
     public getNewToken(): Observable<any> {
         let refreshToken: string = Helpers.getToken('refresh_token');
