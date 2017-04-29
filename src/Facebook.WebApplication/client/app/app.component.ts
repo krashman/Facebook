@@ -34,7 +34,10 @@ export class AppComponent implements OnInit {
     this.authenticationService.isSignedIn().takeUntil(this.unsubscribe).subscribe(isSignedIn => {
       this.loginButtonText = isSignedIn ? 'Logout' : 'Login';
       console.log(this.loginButtonText);
-    })
+    });
+
+    // Optional strategy for refresh token through a scheduler.
+    this.authenticationService.startupTokenRefresh();
   }
 
   title = 'app works!';

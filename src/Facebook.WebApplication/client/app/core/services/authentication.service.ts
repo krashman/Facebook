@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
@@ -27,6 +28,12 @@ export class AuthenticationService {
     public userSubject = new BehaviorSubject<any>({});
 
     public rolesSubject = new BehaviorSubject<string[]>([]);
+    /**
+     * Offset for the scheduling to avoid the inconsistency of data on the client.
+     */
+    private offsetSeconds: number = 30;
+
+    refreshSubscription: Subscription;
 
 
     /**
@@ -63,7 +70,7 @@ export class AuthenticationService {
         this.redirectUrl = null;
 
         this.signinSubject.next(false);
-        console.log(this.signinSubject.getValue());
+        this.refreshSubscription.unsubscribe();
         this.userSubject.next({});
         this.rolesSubject.next([]);
 
@@ -71,6 +78,38 @@ export class AuthenticationService {
 
         this.revokeToken();
         this.revokeRefreshToken();
+    }
+
+    /**
+     * Case when the user comes back to the app after closing it.
+     */
+    public startupTokenRefresh(): void {
+        // If the user is authenticated, uses the token stream
+        // provided by angular2-jwt and flatMap the token.
+        if (this.signinSubject.getValue()) {
+            let source = this.authHttp.tokenStream.flatMap(
+                (token: string) => {
+                    let now: number = new Date().valueOf();
+                    let exp: number = Helpers.getExp();
+                    let delay: number = exp - now - this.offsetSeconds * 1000;
+
+                    // Uses the delay in a timer to run the refresh at the proper time.
+                    return Observable.timer(delay);
+                });
+
+            // Once the delay time from above is reached, gets a new JWT and schedules additional refreshes.
+            source.subscribe(() => {
+                this.getNewToken().subscribe(
+                    () => {
+                        this.scheduleRefresh();
+                    },
+                    (error: any) => {
+                        // Need to handle this error.
+                        console.log(error);
+                    }
+                );
+            });
+        }
     }
 
     private revokeToken() {
@@ -148,6 +187,56 @@ export class AuthenticationService {
             });
     }
 
+    /**
+     * Optional strategy for refresh token through a scheduler.
+     * Will schedule a refresh at the appropriate time.
+     */
+    public scheduleRefresh(): void {
+        let source = this.authHttp.tokenStream.flatMap(
+            (token: string) => {
+                let delay: number = this.expiresIn - this.offsetSeconds * 1000;
+                return Observable.interval(delay);
+            });
+
+        this.refreshSubscription = source.subscribe(() => {
+            this.getNewToken().subscribe(
+                () => {
+                    // Scheduler works.
+                },
+                (error: any) => {
+                    // Need to handle this error.
+                    console.log(error);
+                }
+            );
+        });
+    }
+
+    public getNewToken(): Observable<any> {
+        let refreshToken: string = Helpers.getToken('refresh_token');
+
+        let tokenEndpoint: string = environment.TOKEN_ENDPOINT;
+
+        let params: any = {
+            client_id: environment.CLIENT_ID,
+            grant_type: "refresh_token",
+            refresh_token: refreshToken
+        };
+
+        let body: string = this.encodeParams(params);
+
+        this.authTime = new Date().valueOf();
+
+        return this.http.post(tokenEndpoint, body, this.options)
+            .map((res: Response) => {
+                let body: any = res.json();
+                if (typeof body.access_token !== 'undefined') {
+                    // Stores access token & refresh token.
+                    this.store(body);
+                }
+            }).catch((error: any) => {
+                return Observable.throw(error);
+            });
+    }
 
     /**
      * Checks for presence of token and that token hasn't expired.
