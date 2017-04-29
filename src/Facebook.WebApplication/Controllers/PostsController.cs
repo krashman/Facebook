@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
+using Facebook.Domain;
+using Facebook.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Facebook.WebApplication.Controllers
 {
   [Route("api/[controller]")]
-  [Authorize(Policy = "Access Resources")]
-  public class ValuesController : Controller
+  public class PostsController : Controller
   {
+      public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository)
+      {
+        
+      }
+
       // GET api/values
     [HttpGet]
     public IEnumerable<string> Get()

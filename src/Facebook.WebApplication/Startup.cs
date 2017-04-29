@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using Facebook.Domain;
 using Facebook.Repository;
@@ -35,11 +36,11 @@ namespace Facebook.WebApplication
         options.AddPolicy("AllowAllOrigins",
                   builder =>
                   {
-                builder
-                          .AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
-              });
+                    builder
+                              .AllowAnyOrigin()
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                  });
       });
 
       services.AddMvc();
@@ -56,8 +57,8 @@ namespace Facebook.WebApplication
       // Identity options.
       services.Configure<IdentityOptions>(options =>
       {
-              // Password settings.
-              options.Password.RequireDigit = true;
+          // Password settings.
+          options.Password.RequireDigit = true;
         options.Password.RequiredLength = 8;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequireUppercase = true;
@@ -67,18 +68,20 @@ namespace Facebook.WebApplication
       // Claims-Based Authorization: role claims.
       services.AddAuthorization(options =>
       {
-              // Policy for dashboard: only administrator role.
-              options.AddPolicy("Manage Accounts", policy => policy.RequireClaim("role", "administrator"));
-              // Policy for resources: user or administrator role. 
-              options.AddPolicy("Access Resources", policyBuilder => policyBuilder.RequireAssertion(
-                      context => context.User.HasClaim(claim => (claim.Type == "role" && claim.Value == "user")
-                         || (claim.Type == "role" && claim.Value == "administrator"))
-                  )
-              );
+          // Policy for dashboard: only administrator role.
+          options.AddPolicy("Manage Accounts", policy => policy.RequireClaim("role", "administrator"));
+          // Policy for resources: user or administrator role. 
+          options.AddPolicy("Access Resources", policyBuilder => policyBuilder.RequireAssertion(
+                context => context.User.HasClaim(claim => (claim.Type == "role" && claim.Value == "user")
+                   || (claim.Type == "role" && claim.Value == "administrator"))
+            )
+        );
       });
 
       services.AddSingleton<IUserRepository, UserRepository>();
+      services.Configure<ApplicationSettings>(Configuration.GetSection("AppSettings"));
       services.AddTransient<IDbService, DbService>();
+      services.AddTransient<IDocumentDatabaseRepository<Post>, DocumentDatabaseRepository<Post>>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,10 +92,10 @@ namespace Facebook.WebApplication
 
       var angularRoutes = new[]
       {
-                "/home",
-                "/about",
-                "/register"
-            };
+                  "/home",
+                  "/about",
+                  "/register"
+              };
 
       app.Use(async (context, next) =>
       {
