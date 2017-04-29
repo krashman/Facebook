@@ -1,9 +1,13 @@
 ﻿
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Linq;
 using Microsoft.Extensions.Options;
 
 
@@ -15,6 +19,8 @@ namespace Facebook.Repository
         Task<Document> CreateItemAsync(T item);
         Task<Document> DeleteItemAsync(string id);
         Task<Document> UpdateItemAsync(string id, Post value);
+        Task<IEnumerable<T>> GetItemsWhereAsync(Expression<Func<T, bool>> wherePredicate);
+        Task<IEnumerable<T>> GetAllItemsAsync();
     }
 
     public class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
@@ -70,7 +76,7 @@ namespace Facebook.Repository
         }
 
 
-        //TODO: Prob move somewhere in the pipeline where everything is really setup, so no need to call these checks
+        //TODO: Prob move somewhere in the pipeline wherePredicate everything is really setup, so no need to call these checks
         private async Task CreateDatabaseIfNotExistsAsync()
         {
             try
@@ -119,7 +125,43 @@ namespace Facebook.Repository
 
         public async Task<Document> UpdateItemAsync(string id, Post value)
         {
-            return await _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), value);
+            return
+                await _documentClient.ReplaceDocumentAsync(
+                    UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), value);
         }
+
+        public async Task<IEnumerable<T>> GetAllItemsAsync()
+        {
+            return await CreateDocumentQuery().ExecuteQuery<T>();
+
+        }
+        
+        public async Task<IEnumerable<T>> GetItemsWhereAsync(Expression<Func<T, bool>> wherePredicate)
+        {
+            return await CreateDocumentQuery().Where(wherePredicate).ExecuteQuery();
+        }
+
+        private IOrderedQueryable<T> CreateDocumentQuery()
+        {
+            return
+                _documentClient.CreateDocumentQuery<T>(
+                    UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId),
+                    new FeedOptions() { MaxItemCount = -1 });
+        }
+    }
+
+    public static class DocumentQueryExtensions
+    {
+        public static async Task<List<T>> ExecuteQuery<T>(this IQueryable<T> query) where T : class
+        {
+            var documentQuery = query.AsDocumentQuery();
+            var results = new List<T>();
+            while (documentQuery.HasMoreResults)
+            {
+                results.AddRange(await documentQuery.ExecuteNextAsync<T>());
+            }
+            return results;
+        }
+
     }
 }

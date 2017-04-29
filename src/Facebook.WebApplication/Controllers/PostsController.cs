@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
@@ -18,11 +19,12 @@ namespace Facebook.WebApplication.Controllers
       _documentDatabaseRepository = documentDatabaseRepository;
     }
 
+
     // GET api/values
     [HttpGet]
-    public IEnumerable<string> Get()
+    public async Task<IEnumerable<Post>> Get()
     {
-      return new string[] { "value1", "value2" };
+        return await _documentDatabaseRepository.GetAllItemsAsync();
     }
 
     // GET api/values/5
