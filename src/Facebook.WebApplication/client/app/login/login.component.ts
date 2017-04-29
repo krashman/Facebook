@@ -10,8 +10,8 @@ const emailValidator = Validators.pattern('^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5
 })
 export class LoginComponent implements OnInit {
   form: FormGroup;
-  public email = new FormControl('', emailValidator);
-  public password = new FormControl('');
+  public email = new FormControl('baha@baha.com', emailValidator);
+  public password = new FormControl('Password123!@#');
   errorMessages: any;
 
 
