@@ -1,20 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Documents;
 
 namespace Facebook.WebApplication.Controllers
 {
   [Route("api/[controller]")]
   public class PostsController : Controller
   {
-      public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository)
-      {
-        
-      }
+    private readonly IDocumentDatabaseRepository<Post> _documentDatabaseRepository;
 
-      // GET api/values
+    public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository)
+    {
+      _documentDatabaseRepository = documentDatabaseRepository;
+    }
+
+    // GET api/values
     [HttpGet]
     public IEnumerable<string> Get()
     {
@@ -23,15 +27,16 @@ namespace Facebook.WebApplication.Controllers
 
     // GET api/values/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<Post> Get(string id)
     {
-      return "value";
+      return await _documentDatabaseRepository.GetItemAsync(id);
     }
 
     // POST api/values
     [HttpPost]
-    public void Post([FromBody]string value)
+    public async Task<Document> Post([FromBody]Post value)
     {
+        return await _documentDatabaseRepository.CreateItemAsync(value);
     }
 
     // PUT api/values/5

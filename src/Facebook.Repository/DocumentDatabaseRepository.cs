@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Microsoft.Azure.Documents;
@@ -13,6 +14,7 @@ namespace Facebook.Repository
     public interface IDocumentDatabaseRepository<T> where T : class
     {
         Task<T> GetItemAsync(string id);
+        Task<Document> CreateItemAsync(T item);
     }
 
     public class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
@@ -30,6 +32,20 @@ namespace Facebook.Repository
             {
                 EnableEndpointDiscovery = false
             });
+            Initialize();
+
+
+        }
+
+        private async void Initialize()
+        {
+            await CreateDatabaseIfNotExistsAsync();
+            await CreateCollectionIfNotExistsAsync();
+        }
+
+        public async Task<Document> CreateItemAsync(T item)
+        {
+            return await _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId), item);
         }
 
 
@@ -45,6 +61,49 @@ namespace Facebook.Repository
                 if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return null;
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+
+        //TODO: Prob move somewhere in the pipeline where everything is really setup, so no need to call these checks
+        private async Task CreateDatabaseIfNotExistsAsync()
+        {
+            try
+            {
+                await _documentClient.ReadDatabaseAsync(UriFactory.CreateDatabaseUri(_databaseId));
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    await _documentClient.CreateDatabaseAsync(new Database { Id = _databaseId });
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private async Task CreateCollectionIfNotExistsAsync()
+        {
+            try
+            {
+                await _documentClient.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId));
+            }
+            catch (DocumentClientException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    await _documentClient.CreateDocumentCollectionAsync(
+                        UriFactory.CreateDatabaseUri(_databaseId),
+                        new DocumentCollection { Id = _collectionId },
+                        new RequestOptions { OfferThroughput = 1000 });
                 }
                 else
                 {
