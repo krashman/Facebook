@@ -22,6 +22,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.authenticationService.isSignedIn()) {
+      this.router.navigate(['/home']);
+    }
   }
 
   onSubmit() {
@@ -34,6 +37,7 @@ export class LoginComponent implements OnInit {
         ? this.authenticationService.redirectUrl
         : '/home';
 
+      console.log(redirect);
       // Redirects the user.
       this.router.navigate([redirect]);
     }, err => {

@@ -8,8 +8,10 @@
       <md-input-container class="example-full-width">
         <input mdInput placeholder="Password" type="password" formControlName="password">
       </md-input-container>
-      <div class="example-full-width" style="padding-top:30px; display:flex">
+      <div class="example-full-width" style="display:flex">
         <div style="flex: 1 auto"></div>
+
+        <button md-button [routerLink]="['/register']" color="primary">Sign up</button>
         <button md-raised-button type="submit" color="accent">Login</button>
       </div>
     </form>

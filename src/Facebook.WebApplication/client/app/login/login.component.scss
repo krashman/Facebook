@@ -1,0 +1,33 @@
+mdl-layout {
+	align-items: center;
+    justify-content: center;
+}
+mdl-layout-content {
+	padding: 24px;
+	flex: none;
+}
+
+form {
+    padding:24px;
+    text-align: center;
+}
+    
+form:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.submit-btn { 
+    float:right;
+}
+
+.example-form {
+  width: 500px;
+}
+
+.example-full-width {
+  width: 100%;
+}
