@@ -127,7 +127,24 @@ export class AuthenticationService {
                     this.signinSubject.next(true);
                 }
             }).catch((error: any) => {
-                return Observable.throw(error);
+                // Checks for error in response (error from the Token endpoint).
+                if (error.body != "") {
+                    let body: any = error.json();
+
+                    switch (body.error) {
+                        case "invalid_grant":
+                            error = "Invalid email or password";
+                            break;
+                        default:
+                            error = "Unexpected error. Try again";
+                    }
+                } else {
+                    let errMsg = (error.message) ? error.message :
+                        error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+                    console.log(errMsg);
+                    error = "Server error. Try later.";
+                }
+                return Observable.throw(error)
             });
     }
 

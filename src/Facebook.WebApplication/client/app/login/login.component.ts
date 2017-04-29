@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   form: FormGroup;
   public email = new FormControl('', emailValidator);
   public password = new FormControl('');
+  errorMessages: any;
 
 
   constructor(private router: Router, private fb: FormBuilder, private authenticationService: AuthenticationService) {
@@ -41,7 +42,7 @@ export class LoginComponent implements OnInit {
       // Redirects the user.
       this.router.navigate([redirect]);
     }, err => {
-      console.error(err);
+      this.errorMessages = err;
     })
   }
 
