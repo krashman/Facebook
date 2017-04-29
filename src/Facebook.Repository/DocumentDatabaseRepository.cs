@@ -1,11 +1,9 @@
 ﻿
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 
@@ -15,6 +13,7 @@ namespace Facebook.Repository
     {
         Task<T> GetItemAsync(string id);
         Task<Document> CreateItemAsync(T item);
+        Task<Document> DeleteItemAsync(string id);
     }
 
     public class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
@@ -110,6 +109,11 @@ namespace Facebook.Repository
                     throw;
                 }
             }
+        }
+
+        public async Task<Document> DeleteItemAsync(string id)
+        {
+            return await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id));
         }
     }
 }

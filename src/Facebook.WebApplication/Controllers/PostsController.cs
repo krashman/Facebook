@@ -36,7 +36,7 @@ namespace Facebook.WebApplication.Controllers
     [HttpPost]
     public async Task<Document> Post([FromBody]Post value)
     {
-        return await _documentDatabaseRepository.CreateItemAsync(value);
+      return await _documentDatabaseRepository.CreateItemAsync(value);
     }
 
     // PUT api/values/5
@@ -47,8 +47,9 @@ namespace Facebook.WebApplication.Controllers
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async void Delete(string id)
     {
+      await _documentDatabaseRepository.DeleteItemAsync(id);
     }
   }
 }
