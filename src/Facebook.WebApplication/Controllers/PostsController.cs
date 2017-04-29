@@ -41,13 +41,14 @@ namespace Facebook.WebApplication.Controllers
 
     // PUT api/values/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody]string value)
+    public async Task Put(string id, [FromBody]Post value)
     {
+        await _documentDatabaseRepository.UpdateItemAsync(id, value);
     }
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
-    public async void Delete(string id)
+    public async Task Delete(string id)
     {
       await _documentDatabaseRepository.DeleteItemAsync(id);
     }

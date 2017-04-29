@@ -14,6 +14,7 @@ namespace Facebook.Repository
         Task<T> GetItemAsync(string id);
         Task<Document> CreateItemAsync(T item);
         Task<Document> DeleteItemAsync(string id);
+        Task<Document> UpdateItemAsync(string id, Post value);
     }
 
     public class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
@@ -114,6 +115,11 @@ namespace Facebook.Repository
         public async Task<Document> DeleteItemAsync(string id)
         {
             return await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id));
+        }
+
+        public async Task<Document> UpdateItemAsync(string id, Post value)
+        {
+            return await _documentClient.ReplaceDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), value);
         }
     }
 }
