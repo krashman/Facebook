@@ -7,3 +7,7 @@ body {
     margin:0px;
     overflow:hidden;
 }
+
+.full-width {
+  width: 100%;
+}

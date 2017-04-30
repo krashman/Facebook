@@ -17,5 +17,6 @@ export const environment = {
   /**
    * The Web API, refresh token (offline_access) & user info (openid profile roles).
    */
-  SCOPE: "WebAPI offline_access openid profile roles"
+  SCOPE: "WebAPI offline_access openid profile roles",
+  API_ENDPOINT: 'http://localhost:5000/'
 };

@@ -1,14 +1,14 @@
 <div style="margin:0 auto; max-width:600px;padding:30px;">
   <md-card>
     <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <md-input-container class="example-full-width">
+      <md-input-container class="full-width">
         <input mdInput placeholder="Email address" formControlName="email">
       </md-input-container>
 
-      <md-input-container class="example-full-width">
+      <md-input-container class="full-width">
         <input mdInput placeholder="Password" type="password" formControlName="password">
       </md-input-container>
-      <div class="example-full-width" style="display:flex">
+      <div class="full-width" style="display:flex">
         <div style="flex: 1 auto"></div>
 
         <a md-button [routerLink]="['/register']" color="primary">Sign up</a>

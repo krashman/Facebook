@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeComponent } from './home.component';
 import { CoreModule } from '../core/core.module';
 import { HomeRoutingModule } from './home-routing.module';
-
+import { PostModule } from '../post/post.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -13,7 +13,8 @@ import { HomeRoutingModule } from './home-routing.module';
         ReactiveFormsModule,
         HttpModule,
         HomeRoutingModule,
-        CoreModule
+        CoreModule,
+        PostModule
     ],
 
     declarations: [

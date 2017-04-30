@@ -1,0 +1,1 @@
+export { PostServiceApi } from './post.service.api'

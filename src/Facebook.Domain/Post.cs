@@ -7,7 +7,6 @@ namespace Facebook.Domain
     {
         [JsonProperty(PropertyName = "id")]
         public override Guid Id { get; set; }
-        public string Title { get; set; }
         public string Content { get; set; }
         public string DatePosted { get; set; }
 

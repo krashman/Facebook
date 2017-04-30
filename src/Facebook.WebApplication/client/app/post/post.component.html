@@ -1,0 +1,14 @@
+<div style="margin:0 auto; max-width:600px;padding:30px;">
+  <md-card>
+    <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <md-input-container class="full-width">
+        <input mdInput placeholder="What's on your mind?'" formControlName="post">
+      </md-input-container>
+      <div class="full-width" style="display:flex">
+        <div style="flex: 1 auto"></div>
+
+        <button md-raised-button type="submit" color="accent">Post</button>
+      </div>
+    </form>
+  </md-card>
+</div>
