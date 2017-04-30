@@ -1,7 +1,10 @@
 <div *ngFor="let post of posts" style="margin:0 auto; max-width:600px;padding:30px;">
   <md-card>
-    {{post.id}}
-    {{post.userid}}
-    {{post.content}}
+    <div class="full-width" style="display:flex">
+      <div style="flex: 1 auto"></div>
+
+      <button md-button (click)="deletePost(post.id)"><md-icon>close</md-icon></button>
+    </div>
+    {{post.id}} {{post.userid}} {{post.content}}
   </md-card>
 </div>

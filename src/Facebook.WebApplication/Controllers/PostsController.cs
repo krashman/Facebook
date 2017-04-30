@@ -25,7 +25,7 @@ namespace Facebook.WebApplication.Controllers
     [HttpGet]
     public async Task<IEnumerable<Post>> Get()
     {
-      return await _documentDatabaseRepository.GetAllItemsAsync();
+        return await _documentDatabaseRepository.GetAllItemsAsync();
     }
 
     // GET api/values/5
@@ -39,10 +39,10 @@ namespace Facebook.WebApplication.Controllers
     [HttpPost]
     public async Task<Document> Post([FromBody]Post value)
     {
-      if (value.Id == default(Guid))
-      {
-        value.Id = Guid.NewGuid();
-      }
+        if (value.Id ==  default(Guid))
+        {
+            value.Id = Guid.NewGuid();
+        }
       return await _documentDatabaseRepository.CreateItemAsync(value);
     }
 
@@ -50,7 +50,7 @@ namespace Facebook.WebApplication.Controllers
     [HttpPut("{id}")]
     public async Task Put(string id, [FromBody]Post value)
     {
-      await _documentDatabaseRepository.UpdateItemAsync(id, value);
+        await _documentDatabaseRepository.UpdateItemAsync(id, value);
     }
 
     // DELETE api/values/5
