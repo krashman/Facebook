@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './core/material.module';
 import { LoginModule } from './login/login.module';
 import { CoreModule } from './core/core.module';
-import { PostModule } from './post/post.module';
 
 @NgModule({
   declarations: [

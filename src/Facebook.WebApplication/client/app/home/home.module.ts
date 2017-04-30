@@ -5,7 +5,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HomeComponent } from './home.component';
 import { CoreModule } from '../core/core.module';
 import { HomeRoutingModule } from './home-routing.module';
-import { PostModule } from '../post/post.module';
+import { NewPostModule } from '../new-post/new.post.module';
+import { PostsModule } from '../posts/posts.module';
 @NgModule({
     imports: [
         CommonModule,
@@ -14,7 +15,8 @@ import { PostModule } from '../post/post.module';
         HttpModule,
         HomeRoutingModule,
         CoreModule,
-        PostModule
+        NewPostModule,
+        PostsModule
     ],
 
     declarations: [

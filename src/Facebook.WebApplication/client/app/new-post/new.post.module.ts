@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PostComponent } from './post.component';
+import { PostComponent } from './new.post.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdButtonModule, MdInputModule, MdCardModule } from '@angular/material';
 import { PostServiceApi } from '../apis';
@@ -20,4 +20,4 @@ import { PostServiceApi } from '../apis';
     PostServiceApi
   ]
 })
-export class PostModule { }
+export class NewPostModule { }

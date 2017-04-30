@@ -21,6 +21,17 @@ export class PostServiceApi {
       });
   }
 
+  public getAllPosts(extraHttpRequestParams?: any): Observable<Array<Post>> {
+    return this.getAllPostsWithHttpInfo(extraHttpRequestParams)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   public addPostWithHttpInfo(body?: Post, extraHttpRequestParams?: any): Observable<Response> {
     const path = environment.API_ENDPOINT + `/api/posts`;
 
@@ -49,6 +60,35 @@ export class PostServiceApi {
       search: queryParameters
     });
 
+    if (extraHttpRequestParams) {
+      requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+    }
+
+    return this.http.request(path, requestOptions);
+  }
+
+  public getAllPostsWithHttpInfo(extraHttpRequestParams?: any): Observable<Response> {
+    const path = environment.API_ENDPOINT + `/api/posts`;
+
+    let queryParameters = new URLSearchParams();
+    let headers = new Headers(this.defaultHeaders.toJSON());
+
+    // to determine the Accept header
+    let produces: string[] = [
+      'application/json',
+      'application/xml'
+    ];
+
+
+    headers.set('Authorization', 'Bearer ' + Helpers.getToken('id_token'));
+
+    let requestOptions: RequestOptionsArgs = new RequestOptions({
+      method: RequestMethod.Get,
+      headers: headers,
+      search: queryParameters
+    });
+
+    // https://github.com/swagger-api/swagger-codegen/issues/4037
     if (extraHttpRequestParams) {
       requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
     }
