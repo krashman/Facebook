@@ -4,11 +4,11 @@ services:
   facebook:
     image: facebook
     build:
-      context: .
+      context: ./src/Facebook.WebApplication
       dockerfile: Dockerfile
 
   facebook.identityprovider:
     image: facebook.identityprovider
     build:
-      context: ./../Facebook.IdentityProvider
+      context: ./src/Facebook.IdentityProvider
       dockerfile: Dockerfile
