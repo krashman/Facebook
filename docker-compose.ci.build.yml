@@ -2,8 +2,8 @@ version: '2'
 
 services:
   ci-build:
-    image: microsoft/aspnetcore-build:1.0.3-msbuild-preview
+    image: microsoft/aspnetcore-build:latest
     volumes:
       - .:/src
     working_dir: /src
-    command: /bin/bash -c "dotnet restore && npm run build-production && dotnet publish -c Release -o ./bin/Release/PublishOutput"
+    entrypoint: ["sh", "./build.sh"]
