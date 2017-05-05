@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -13,7 +14,8 @@ namespace Facebook.IdentityProvider
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource("roles", new List<string> { "role" })
+                new IdentityResource("roles", new List<string> { "role" }),
+                new IdentityResource(JwtClaimTypes.FamilyName, new List<string>() { "test"}) { Required = true, UserClaims = { "blah"}}
             };
         }
 
@@ -51,6 +53,8 @@ namespace Facebook.IdentityProvider
                         "WebAPI"
                     },
                     AllowOfflineAccess = true // For refresh token.
+
+                   
                 }
             };
         }

@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Facebook.Repository;
+using IdentityModel;
+using IdentityServer4;
+using IdentityServer4.Extensions;
+using IdentityServer4.Models;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +20,54 @@ using Microsoft.Extensions.Logging;
 
 namespace Facebook.IdentityProvider
 {
+    public class IdentityWithAdditionalClaimsProfileService : IProfileService
+    {
+        private readonly IUserClaimsPrincipalFactory<IdentityUser> _claimsFactory;
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public IdentityWithAdditionalClaimsProfileService(UserManager<IdentityUser> userManager,
+            IUserClaimsPrincipalFactory<IdentityUser> claimsFactory)
+        {
+            _userManager = userManager;
+            _claimsFactory = claimsFactory;
+        }
+
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        {
+            var sub = context.Subject.GetSubjectId();
+
+            var user = await _userManager.FindByIdAsync(sub);
+            var principal = await _claimsFactory.CreateAsync(user);
+
+            var claims = principal.Claims.ToList();
+
+            claims = claims.Where(claim => context.RequestedClaimTypes.Contains(claim.Type)).ToList();
+
+            claims.Add(new Claim(JwtClaimTypes.GivenName, user.UserName));
+
+
+            claims.Add(new Claim(JwtClaimTypes.Role, "dataEventRecords.admin"));
+            claims.Add(new Claim(JwtClaimTypes.Role, "dataEventRecords.user"));
+            claims.Add(new Claim(JwtClaimTypes.Role, "dataEventRecords"));
+            claims.Add(new Claim(JwtClaimTypes.Scope, "dataEventRecords"));
+
+            claims.Add(new Claim(IdentityServerConstants.StandardScopes.Email, user.Email));
+
+
+            context.IssuedClaims = claims;
+        }
+
+        public async Task IsActiveAsync(IsActiveContext context)
+        {
+            var sub = context.Subject.GetSubjectId();
+            var user = await _userManager.FindByIdAsync(sub);
+            context.IsActive = user != null;
+        }
+
+    }
+
+
+
     public class Startup
     {
         public Startup(IHostingEnvironment env)
@@ -63,6 +118,9 @@ namespace Facebook.IdentityProvider
                 );
             });
 
+
+            services.AddTransient<IProfileService, IdentityWithAdditionalClaimsProfileService>();
+
             // Adds IdentityServer.
             // The AddTemporarySigningCredential extension creates temporary key material for signing tokens on every start.
             // Again this might be useful to get started, but needs to be replaced by some persistent key material for production scenarios.
@@ -72,6 +130,8 @@ namespace Facebook.IdentityProvider
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
+                .AddProfileService<IdentityWithAdditionalClaimsProfileService>()
+
                 .AddAspNetIdentity<IdentityUser>(); // IdentityServer4.AspNetIdentity.
         }
 

@@ -16,7 +16,7 @@ namespace Facebook.Repository
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connection = @"Server=192.168.1.11,1433;Database=Facebook;User Id=test;Password=Test123";
+            var connection = @"Server=localhost;Database=Facebook;Trusted_Connection=true";
             optionsBuilder.UseSqlServer(connection);
             base.OnConfiguring(optionsBuilder);
             

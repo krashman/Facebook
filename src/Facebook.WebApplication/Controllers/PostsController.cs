@@ -1,23 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
 
 namespace Facebook.WebApplication.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize(Policy = "Access Resources")]
   public class PostsController : Controller
   {
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly IDocumentDatabaseRepository<Post> _documentDatabaseRepository;
 
-    public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository)
+    public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository, UserManager<IdentityUser> userManager)
     {
       _documentDatabaseRepository = documentDatabaseRepository;
+      _userManager = userManager;
     }
 
 
@@ -25,7 +31,7 @@ namespace Facebook.WebApplication.Controllers
     [HttpGet]
     public async Task<IEnumerable<Post>> Get()
     {
-        return await _documentDatabaseRepository.GetAllItemsAsync();
+      return await _documentDatabaseRepository.GetAllItemsAsync();
     }
 
     // GET api/values/5
@@ -39,10 +45,17 @@ namespace Facebook.WebApplication.Controllers
     [HttpPost]
     public async Task<Document> Post([FromBody]Post value)
     {
-        if (value.Id ==  default(Guid))
-        {
-            value.Id = Guid.NewGuid();
-        }
+      if (value.Id == default(Guid))
+      {
+        value.Id = Guid.NewGuid();
+      }
+      var identityId = User.FindFirst("sub").Value;
+      value.UserId = new Guid(identityId);
+      var identityUser = await _userManager.FindByIdAsync(identityId);
+      var claims = await _userManager.GetClaimsAsync(identityUser);
+      var firstName = claims.First(x => x.Type == "given_name");
+      var lastName = claims.First(x => x.Type == "family_name");
+      value.CreatedBy = $"{firstName.Value} {lastName.Value}";
       return await _documentDatabaseRepository.CreateItemAsync(value);
     }
 
@@ -50,7 +63,7 @@ namespace Facebook.WebApplication.Controllers
     [HttpPut("{id}")]
     public async Task Put(string id, [FromBody]Post value)
     {
-        await _documentDatabaseRepository.UpdateItemAsync(id, value);
+      await _documentDatabaseRepository.UpdateItemAsync(id, value);
     }
 
     // DELETE api/values/5

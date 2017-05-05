@@ -7,12 +7,13 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../../environments/environment';
 import { AuthHttp } from 'angular2-jwt';
 import { User } from '../models/index';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthenticationService {
     redirectUrl: string;
 
-    constructor(private http: Http, private authHttp: AuthHttp) {        // On bootstrap or refresh, tries to get users'data.
+    constructor(private http: Http, private authHttp: AuthHttp, private router: Router) {        // On bootstrap or refresh, tries to get users'data.
         this.getUserInfo();
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         this.options = new RequestOptions({ headers: this.headers });
@@ -276,6 +277,8 @@ export class AuthenticationService {
                     this.rolesSubject.next(user.role);
                 },
                 (error: any) => {
+                    this.signinSubject.next(false);
+                    this.router.navigate(['/login']);
                     console.log(error);
                 });
         }

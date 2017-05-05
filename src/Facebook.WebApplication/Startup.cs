@@ -108,13 +108,15 @@ namespace Facebook.WebApplication
         await next();
       });
 
+
       app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
       {
         //TODO: Get from config for different environments
         Authority = "http://localhost:5001/",
         ApiName = "WebAPI",
 
-        RequireHttpsMetadata = false
+        RequireHttpsMetadata = false,
+        
       });
 
       app.UseCors("AllowAllOrigins");

@@ -1,13 +1,13 @@
-<div style="margin:0 auto; max-width:600px;padding:30px;">
+<div style="margin:0 auto; max-width:600px;margin-top:10px;">
   <md-card>
     <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <md-input-container class="full-width">
-        <input mdInput placeholder="What's on your mind?'" formControlName="post">
+        <textarea mdTextareaAutosize style="resize: none" rows=1 mdInput placeholder="What's on your mind?'" formControlName="post"></textarea>
       </md-input-container>
       <div class="full-width" style="display:flex">
         <div style="flex: 1 auto"></div>
 
-        <button md-raised-button type="submit" color="accent">Post</button>
+        <button md-button type="submit" color="accent">POST</button>
       </div>
     </form>
   </md-card>
