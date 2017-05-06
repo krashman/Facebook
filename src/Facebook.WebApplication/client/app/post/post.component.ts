@@ -30,4 +30,8 @@ export class PostComponent implements OnInit {
     });
   }
 
+  getMargin() {
+    return this.post.parentId !== null ? '30px' : '0px';
+  }
+
 }

@@ -1,4 +1,4 @@
-<div [formGroup]="commentFormGroup">
+<div [formGroup]="commentFormGroup" [ngStyle]="{'margin-left':getMargin()}">
   <div class="full-width" style="display:flex">
     <div>Created by: {{post.createdBy}}</div>
     <div style="flex: 1 auto"></div>
@@ -8,7 +8,7 @@
 
   <div>{{post.content}}</div>
 
-  <hr *ngIf="!post.parentId"/>
+  <hr *ngIf="!post.parentId" />
 
   <md-input-container style="width:100%" floatPlaceholder="never">
     <textarea mdTextareaAutosize rows="1" mdInput style="resize: none; width:100%" formControlName="post" placeholder="Add a comment..."></textarea>
