@@ -6,7 +6,7 @@ namespace Facebook.Domain
     public class Post : Entity
     {
         [JsonProperty(PropertyName = "id")]
-        public override Guid Id { get; set; }
+        public override Guid Id { get; set; } = Guid.NewGuid();
         public string Content { get; set; }
         public DateTime? DatePosted { get; set; } = DateTime.Now;
 

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +17,14 @@ namespace Facebook.WebApplication.Controllers
   public class PostsController : Controller
   {
     private readonly UserManager<IdentityUser> _userManager;
+    private readonly IDocumentDatabaseRepository<SocialInteraction> _socialInteractionDocumentDatabaseRepository;
     private readonly IDocumentDatabaseRepository<Post> _documentDatabaseRepository;
 
-    public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository, UserManager<IdentityUser> userManager)
+    public PostsController(IDocumentDatabaseRepository<Post> documentDatabaseRepository, UserManager<IdentityUser> userManager, IDocumentDatabaseRepository<SocialInteraction> socialInteractionDocumentDatabaseRepository)
     {
       _documentDatabaseRepository = documentDatabaseRepository;
       _userManager = userManager;
+      _socialInteractionDocumentDatabaseRepository = socialInteractionDocumentDatabaseRepository;
     }
 
 
@@ -49,10 +50,6 @@ namespace Facebook.WebApplication.Controllers
     [HttpPost]
     public async Task<Document> Post([FromBody]Post value)
     {
-      if (value.Id == default(Guid))
-      {
-        value.Id = Guid.NewGuid();
-      }
       var identityId = User.FindFirst("sub").Value;
       value.UserId = new Guid(identityId);
       var identityUser = await _userManager.FindByIdAsync(identityId);
@@ -60,6 +57,28 @@ namespace Facebook.WebApplication.Controllers
       var firstName = claims.First(x => x.Type == "given_name");
       var lastName = claims.First(x => x.Type == "family_name");
       value.CreatedBy = $"{firstName.Value} {lastName.Value}";
+
+      //TODO: Move to post repo
+      var socialInteractions =
+          await _socialInteractionDocumentDatabaseRepository.GetItemsWhereAsync(z => z.PostId == value.ParentId.Value);
+      var socialInteraction = socialInteractions.FirstOrDefault();
+      if (socialInteraction != null)
+      {
+        socialInteraction.TotalComments++;
+        await _socialInteractionDocumentDatabaseRepository.UpdateItemAsync(socialInteraction.Id.ToString(),
+            socialInteraction);
+      }
+      else
+      {
+        socialInteraction = new SocialInteraction
+        {
+          PostId = value.Id,
+          TotalComments = 0,
+          TotalLikes = 0
+        };
+        await _socialInteractionDocumentDatabaseRepository.CreateItemAsync(socialInteraction);
+
+      }
       return await _documentDatabaseRepository.CreateItemAsync(value);
     }
 

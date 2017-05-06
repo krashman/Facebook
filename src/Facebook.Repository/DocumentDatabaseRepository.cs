@@ -18,32 +18,29 @@ namespace Facebook.Repository
         Task<T> GetItemAsync(string id);
         Task<Document> CreateItemAsync(T item);
         Task<Document> DeleteItemAsync(string id);
-        Task<Document> UpdateItemAsync(string id, Post value);
+        Task<Document> UpdateItemAsync(string id, T value);
         Task<IEnumerable<T>> GetItemsWhereAsync(Expression<Func<T, bool>> wherePredicate);
         Task<IEnumerable<T>> GetAllItemsAsync();
     }
 
-    public class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
+    public abstract class DocumentDatabaseRepository<T> : IDocumentDatabaseRepository<T> where T : class
     {
         private readonly string _databaseId;
-        private readonly string _collectionId;
+        protected abstract string CollectionId { get; }
         private readonly DocumentClient _documentClient;
 
-        public DocumentDatabaseRepository(IOptions<ApplicationSettings> applicationSettingsOptions)
+        protected DocumentDatabaseRepository(IOptions<ApplicationSettings> applicationSettingsOptions)
         {
             var applicationSettings = applicationSettingsOptions.Value;
             _databaseId = applicationSettings.DocumentDatabaseName;
-            _collectionId = applicationSettings.Collection;
             _documentClient = new DocumentClient(new Uri(applicationSettings.DocumentDatabaseEndpoint), applicationSettings.DocumentDatabaseAuthorizationKey, new ConnectionPolicy
             {
                 EnableEndpointDiscovery = false
             });
             Initialize();
-
-
         }
 
-        private async void Initialize()
+        protected async void Initialize()
         {
             await CreateDatabaseIfNotExistsAsync();
             await CreateCollectionIfNotExistsAsync();
@@ -51,7 +48,7 @@ namespace Facebook.Repository
 
         public async Task<Document> CreateItemAsync(T item)
         {
-            return await _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId), item);
+            return await _documentClient.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, CollectionId), item);
         }
 
 
@@ -59,7 +56,7 @@ namespace Facebook.Repository
         {
             try
             {
-                Document document = await _documentClient.ReadDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id));
+                Document document = await _documentClient.ReadDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, CollectionId, id));
                 return (T)(dynamic)document;
             }
             catch (DocumentClientException e)
@@ -100,7 +97,7 @@ namespace Facebook.Repository
         {
             try
             {
-                await _documentClient.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId));
+                await _documentClient.ReadDocumentCollectionAsync(UriFactory.CreateDocumentCollectionUri(_databaseId, CollectionId));
             }
             catch (DocumentClientException e)
             {
@@ -108,7 +105,7 @@ namespace Facebook.Repository
                 {
                     await _documentClient.CreateDocumentCollectionAsync(
                         UriFactory.CreateDatabaseUri(_databaseId),
-                        new DocumentCollection { Id = _collectionId },
+                        new DocumentCollection { Id = CollectionId },
                         new RequestOptions { OfferThroughput = 1000 });
                 }
                 else
@@ -120,14 +117,14 @@ namespace Facebook.Repository
 
         public async Task<Document> DeleteItemAsync(string id)
         {
-            return await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, _collectionId, id));
+            return await _documentClient.DeleteDocumentAsync(UriFactory.CreateDocumentUri(_databaseId, CollectionId, id));
         }
 
-        public async Task<Document> UpdateItemAsync(string id, Post value)
+        public async Task<Document> UpdateItemAsync(string id, T value)
         {
             return
                 await _documentClient.ReplaceDocumentAsync(
-                    UriFactory.CreateDocumentUri(_databaseId, _collectionId, id), value);
+                    UriFactory.CreateDocumentUri(_databaseId, CollectionId, id), value);
         }
 
         public async Task<IEnumerable<T>> GetAllItemsAsync()
@@ -145,7 +142,7 @@ namespace Facebook.Repository
         {
             return
                 _documentClient.CreateDocumentQuery<T>(
-                    UriFactory.CreateDocumentCollectionUri(_databaseId, _collectionId),
+                    UriFactory.CreateDocumentCollectionUri(_databaseId, CollectionId),
                     new FeedOptions() { MaxItemCount = -1 });
         }
     }
