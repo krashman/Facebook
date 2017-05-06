@@ -8,6 +8,9 @@
 
   <div>{{post.content}}</div>
 
+  <div>
+    <button md-button (click)="like()"><md-icon>thumb_up</md-icon> Like</button>
+  </div>
   <hr *ngIf="!post.parentId" />
 
   <md-input-container style="width:100%" floatPlaceholder="never">
