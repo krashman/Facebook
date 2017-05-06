@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostsComponent } from './posts.component';
 import { MdButtonModule, MdIconModule, MdInputModule, MdCardModule } from '@angular/material';
-import { CommentModule } from '../comment/comment.module';
+import { PostModule } from '../post/post.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -10,7 +10,7 @@ import { CommentModule } from '../comment/comment.module';
     MdCardModule,
     MdButtonModule,
     MdIconModule,
-    CommentModule
+    PostModule
   ],
   declarations: [PostsComponent],
   exports: [PostsComponent]

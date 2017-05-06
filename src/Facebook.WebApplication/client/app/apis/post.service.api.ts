@@ -78,10 +78,13 @@ export class PostServiceApi {
     return this.http.request(path, requestOptions);
   }
 
-  public getAllPostsWithHttpInfo(extraHttpRequestParams?: any): Observable<Response> {
+  public getAllPostsWithHttpInfo(parentId?: string, extraHttpRequestParams?: any): Observable<Response> {
     const path = environment.API_ENDPOINT + `/api/posts`;
 
     let queryParameters = new URLSearchParams();
+    if (parentId) {
+      queryParameters.set('parentId', parentId);
+    }
     let headers = new Headers(this.defaultHeaders.toJSON());
 
     // to determine the Accept header

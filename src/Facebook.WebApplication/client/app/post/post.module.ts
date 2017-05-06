@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CommentComponent } from './comment.component';
+import { PostComponent } from './post.component';
 import { PostServiceApi } from '../apis';import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdButtonModule, MdIconModule, MdInputModule } from '@angular/material';
 @NgModule({
@@ -12,8 +12,8 @@ import { MdButtonModule, MdIconModule, MdInputModule } from '@angular/material';
     MdIconModule,
     MdInputModule
   ],
-  declarations: [CommentComponent],
-  exports: [CommentComponent],
+  declarations: [PostComponent],
+  exports: [PostComponent],
   providers: [PostServiceApi]
 })
-export class CommentModule { }
+export class PostModule { }

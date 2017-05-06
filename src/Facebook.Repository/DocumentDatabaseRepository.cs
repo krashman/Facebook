@@ -135,7 +135,7 @@ namespace Facebook.Repository
             return await CreateDocumentQuery().ExecuteQuery<T>();
 
         }
-        
+
         public async Task<IEnumerable<T>> GetItemsWhereAsync(Expression<Func<T, bool>> wherePredicate)
         {
             return await CreateDocumentQuery().Where(wherePredicate).ExecuteQuery();

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
@@ -10,11 +9,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.SystemFunctions;
 
 namespace Facebook.WebApplication.Controllers
 {
   [Route("api/[controller]")]
-  [Authorize(Policy = "Access Resources")]
+  //[Authorize(Policy = "Access Resources")]
   public class PostsController : Controller
   {
     private readonly UserManager<IdentityUser> _userManager;
@@ -29,9 +29,13 @@ namespace Facebook.WebApplication.Controllers
 
     // GET api/values
     [HttpGet]
-    public async Task<IEnumerable<Post>> Get()
+    public async Task<IEnumerable<Post>> Get([FromQuery]string parentId, string comment)
     {
-      return await _documentDatabaseRepository.GetAllItemsAsync();
+      if (!string.IsNullOrEmpty(parentId))
+      {
+        return await _documentDatabaseRepository.GetItemsWhereAsync(x => x.ParentId == new Guid(parentId));
+      }
+      return await _documentDatabaseRepository.GetItemsWhereAsync(x => x.ParentId.IsNull());
     }
 
     // GET api/values/5
