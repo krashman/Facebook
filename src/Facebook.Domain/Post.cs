@@ -8,7 +8,7 @@ namespace Facebook.Domain
         [JsonProperty(PropertyName = "id")]
         public override Guid Id { get; set; }
         public string Content { get; set; }
-        public DateTime DatePosted { get; set; } = DateTime.Now;
+        public DateTime? DatePosted { get; set; } = DateTime.Now;
 
         public Guid? ParentId { get; set; }
 

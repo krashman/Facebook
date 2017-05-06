@@ -18,11 +18,5 @@ export class PostsComponent implements OnInit {
     });
   }
 
-  deletePost(postId: string) {
-    _.remove(this.posts, x => x.id === postId);
-    this.postServiceApi.deletePost(postId).subscribe(x=> {
-      console.log(x);
-    });
-  }
 
 }

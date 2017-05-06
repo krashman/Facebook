@@ -2,11 +2,13 @@
   <div class="full-width" style="display:flex">
     <div>Created by: {{post.createdBy}}</div>
     <div style="flex: 1 auto"></div>
-    <div>Date posted: {{post.datePosted}}</div>
+    <div>Date posted: {{post.datePosted | date}}</div>
     <button md-button (click)="deletePost(post.id)"><md-icon>close</md-icon></button>
   </div>
 
   <div>{{post.content}}</div>
+
+  <hr *ngIf="!post.parentId"/>
 
   <md-input-container style="width:100%" floatPlaceholder="never">
     <textarea mdTextareaAutosize rows="1" mdInput style="resize: none; width:100%" formControlName="post" placeholder="Add a comment..."></textarea>
@@ -21,5 +23,5 @@
 </div>
 
 <div *ngFor="let comment of comments">
-  <comment [post]="comment"></comment>
+  <post [post]="comment"></post>
 </div>

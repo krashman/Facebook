@@ -35,7 +35,7 @@ namespace Facebook.WebApplication.Controllers
       {
         return await _documentDatabaseRepository.GetItemsWhereAsync(x => x.ParentId == new Guid(parentId));
       }
-      return await _documentDatabaseRepository.GetItemsWhereAsync(x => x.ParentId.IsNull());
+      return await _documentDatabaseRepository.GetItemsWhereAsync(x => x.ParentId.IsNull() || !x.ParentId.IsDefined());
     }
 
     // GET api/values/5

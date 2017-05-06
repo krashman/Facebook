@@ -24,4 +24,10 @@ export class PostComponent implements OnInit {
     this.postServiceApi.addPost({ content: this.postFormControl.value, parentId: this.post.id }).subscribe();
   }
 
+  deletePost(postId: string) {
+    this.postServiceApi.deletePost(postId).subscribe(x => {
+      console.log(x);
+    });
+  }
+
 }
