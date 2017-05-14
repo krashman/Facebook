@@ -14,5 +14,8 @@ namespace Facebook.Domain
 
         public Guid UserId { get; set; }
         public string CreatedBy { get; set; }
+
+
+        public SocialInteractions SocialInteractions { get; set; }
     }
 }

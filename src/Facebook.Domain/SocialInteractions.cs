@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Domain
 {
-    public class SocialInteraction : Entity
+    public class SocialInteractions : Entity
     {
         [JsonProperty(PropertyName = "id")]
         public override Guid Id { get; set; } = Guid.NewGuid();

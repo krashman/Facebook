@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from './post.component';
-import { PostServiceApi } from '../apis';import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { PostServiceApi } from '../apis'; import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MdButtonModule, MdIconModule, MdInputModule } from '@angular/material';
+import { SocialInteractionsModule } from '../social-interactions/social-interactions.module';
 @NgModule({
   imports: [
     ReactiveFormsModule,
@@ -10,7 +11,8 @@ import { MdButtonModule, MdIconModule, MdInputModule } from '@angular/material';
     CommonModule,
     MdButtonModule,
     MdIconModule,
-    MdInputModule
+    MdInputModule,
+    SocialInteractionsModule
   ],
   declarations: [PostComponent],
   exports: [PostComponent],

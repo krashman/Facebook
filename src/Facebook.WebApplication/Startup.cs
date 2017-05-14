@@ -81,8 +81,8 @@ namespace Facebook.WebApplication
       services.AddSingleton<IUserRepository, UserRepository>();
       services.Configure<ApplicationSettings>(Configuration.GetSection("AppSettings"));
       services.AddTransient<IDbService, DbService>();
-      services.AddTransient<IDocumentDatabaseRepository<Post>, PostRepository>();
-      services.AddTransient<IDocumentDatabaseRepository<SocialInteraction>, SocialInteractionRepository>();
+      services.AddTransient<IPostRepository, PostRepository>();
+      services.AddTransient<ISocialInteractionsRepository, SocialInteractionRepository>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

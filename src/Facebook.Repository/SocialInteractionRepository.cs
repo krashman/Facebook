@@ -1,15 +1,29 @@
-﻿using Facebook.Domain;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Facebook.Domain;
 using Microsoft.Extensions.Options;
 
 namespace Facebook.Repository
 {
-    public class SocialInteractionRepository : DocumentDatabaseRepository<SocialInteraction>
+    public interface ISocialInteractionsRepository : IDocumentDatabaseRepository<SocialInteractions>
+    {
+        Task<SocialInteractions> GetItemByPostId(Guid postId);
+    }
+
+    public class SocialInteractionRepository : DocumentDatabaseRepository<SocialInteractions>, ISocialInteractionsRepository
     {
         public SocialInteractionRepository(IOptions<ApplicationSettings> applicationSettingsOptions) : base(applicationSettingsOptions)
         {
             Initialize();
         }
 
-        protected override string CollectionId { get; } = nameof(SocialInteraction);
+        public async Task<SocialInteractions> GetItemByPostId(Guid postId)
+        {
+            var socialInteractions = (await GetItemsWhereAsync(x => x.PostId == postId)).First();
+            return socialInteractions;
+        }
+
+        protected override string CollectionId { get; } = nameof(SocialInteractions);
     }
 }

@@ -1,2 +1,3 @@
 export { PostServiceApi } from './post.service.api'
-export { Post } from './models';
+export { Post, SocialInteractions } from './models';
+export { SocialInteractionsServiceApi } from './social-interactions.service.api';

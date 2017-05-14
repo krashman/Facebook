@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Facebook.Domain;
 using Facebook.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -10,40 +11,40 @@ namespace Facebook.WebApplication.Controllers
   //[Authorize(Policy = "Access Resources")]
   public class SocialInteractionController : Controller
   {
-    private readonly IDocumentDatabaseRepository<SocialInteraction> _documentDatabaseRepository;
+    private readonly ISocialInteractionsRepository _socialInteractionsRepository;
 
-    public SocialInteractionController(IDocumentDatabaseRepository<SocialInteraction> documentDatabaseRepository)
+    public SocialInteractionController(ISocialInteractionsRepository socialInteractionsRepository)
     {
-      _documentDatabaseRepository = documentDatabaseRepository;
+      _socialInteractionsRepository = socialInteractionsRepository;
     }
 
 
     // GET api/values/5
-    [HttpGet("{id}")]
-    public async Task<SocialInteraction> Get(string postId)
+    [HttpGet]
+    public async Task<SocialInteractions> Get([FromQuery] Guid postId)
     {
-      return await _documentDatabaseRepository.GetItemAsync(postId);
+      return await _socialInteractionsRepository.GetItemByPostId(postId);
     }
 
     // POST api/values
     [HttpPost]
-    public async Task<Document> Post([FromBody]SocialInteraction value)
+    public async Task<Document> Post([FromBody]SocialInteractions value)
     {
-      return await _documentDatabaseRepository.CreateItemAsync(value);
+      return await _socialInteractionsRepository.CreateItemAsync(value);
     }
 
     // PUT api/values/5
     [HttpPut("{id}")]
-    public async Task Put(string id, [FromBody]SocialInteraction value)
+    public async Task Put(string id, [FromBody]SocialInteractions value)
     {
-      await _documentDatabaseRepository.UpdateItemAsync(id, value);
+      await _socialInteractionsRepository.UpdateItemAsync(id, value);
     }
 
     // DELETE api/values/5
     [HttpDelete("{id}")]
     public async Task Delete(string id)
     {
-      await _documentDatabaseRepository.DeleteItemAsync(id);
+      await _socialInteractionsRepository.DeleteItemAsync(id);
     }
   }
 }
