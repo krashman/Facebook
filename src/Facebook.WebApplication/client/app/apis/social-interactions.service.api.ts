@@ -25,7 +25,7 @@ export class SocialInteractionsServiceApi {
   }
 
   public updateSocialInteractionsWithHttpInfo(socialInteraction: SocialInteractions, extraHttpRequestParams?: any): Observable<Response> {
-    const path = environment.API_ENDPOINT + `/api/socialinteractions`;
+    const path = environment.API_ENDPOINT + `/api/socialinteraction/${socialInteraction.id}`;
 
     let queryParameters = new URLSearchParams();
     let headers = new Headers(this.defaultHeaders.toJSON());

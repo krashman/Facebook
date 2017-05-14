@@ -35,9 +35,9 @@ namespace Facebook.WebApplication.Controllers
 
     // PUT api/values/5
     [HttpPut("{id}")]
-    public async Task Put(string id, [FromBody]SocialInteractions value)
+    public async Task<Document> Put(string id, [FromBody]SocialInteractions value)
     {
-      await _socialInteractionsRepository.UpdateItemAsync(id, value);
+      return await _socialInteractionsRepository.UpdateItemAsync(id, value);
     }
 
     // DELETE api/values/5

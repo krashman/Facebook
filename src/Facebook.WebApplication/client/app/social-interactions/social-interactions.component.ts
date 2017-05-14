@@ -16,4 +16,9 @@ export class SocialInteractionsComponent implements OnInit {
     this.socialInteractionsServiceApi.getSocialInteraction(this.postId).subscribe(x => this.socialInteraction = x);
   }
 
+  like() {
+    this.socialInteraction.totalLikes++;
+    this.socialInteractionsServiceApi.updateSocialInteractions(this.socialInteraction).subscribe();
+  }
+
 }
