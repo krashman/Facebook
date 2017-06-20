@@ -6,6 +6,7 @@ import { AuthenticationService } from './index';
 import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import { Http } from '@angular/http';
 import { AuthenticationGuard } from './services/authentication.guard';
+import { FileUploadDirective } from './directives/file-upload.directive';
 
 //TODO: Move somewhere including http object
 // Set tokenGetter to use the same storage in AuthenticationService.Helpers.
@@ -50,7 +51,8 @@ import {
     ],
 
     declarations: [
-        NavigationComponent
+        NavigationComponent,
+        FileUploadDirective
     ],
 
     exports: [
@@ -66,7 +68,8 @@ import {
         MdToolbarModule,
         MdListModule,
         MdProgressBarModule,
-        MdProgressSpinnerModule
+        MdProgressSpinnerModule,
+        FileUploadDirective
     ],
 
     providers: [

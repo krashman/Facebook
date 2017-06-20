@@ -11,5 +11,9 @@ export class MyProfileComponent implements OnInit {
 
   ngOnInit() {
   }
+  
+  addUpload(event) {
+    console.log(event);
+  }
 
 }

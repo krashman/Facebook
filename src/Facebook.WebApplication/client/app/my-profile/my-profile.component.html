@@ -1,3 +1,5 @@
 <p>
   my-profile works!
 </p>
+<input type="file" uploadFile (file)="addUpload($event)" #uploadProfilePicture hidden>
+<button (click)="uploadProfilePicture.click()" md-raised-button color="accent">Upload profile picture</button>
