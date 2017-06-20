@@ -49,7 +49,7 @@ namespace Facebook.WebApplication
       const string connection = @"Server=localhost;Database=Facebook;Trusted_Connection=True;";
       services.AddDbContext<FacebookDatabaseContext>(options => options.UseSqlServer(connection));
 
-      services.AddIdentity<IdentityUser, IdentityRole>()
+      services.AddIdentity<User, IdentityRole>()
               .AddEntityFrameworkStores<FacebookDatabaseContext>()
               .AddDefaultTokenProviders();
 

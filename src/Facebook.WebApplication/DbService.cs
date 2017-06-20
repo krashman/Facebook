@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Facebook.Domain;
 using Facebook.Repository;
 using IdentityModel;
 using Microsoft.AspNetCore.Identity;
@@ -12,13 +13,13 @@ namespace Facebook.WebApplication
 {
     public class DbService : IDbService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger _logger;
         private readonly FacebookDatabaseContext _context;
 
         public DbService(
-            UserManager<IdentityUser> userManager,
+            UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager,
             ILoggerFactory loggerFactory,
             FacebookDatabaseContext context)
@@ -49,7 +50,7 @@ namespace Facebook.WebApplication
             await _roleManager.AddClaimAsync(userRole, new Claim(JwtClaimTypes.Role, "user"));
 
             // Seeds an admin user.
-            var user = new IdentityUser()
+            var user = new User()
             {
                 AccessFailedCount = 0,
                 Email = "admin@gmail.com",

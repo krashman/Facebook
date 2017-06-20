@@ -40,8 +40,10 @@ export class AppComponent implements OnInit {
       console.log(this.loginButtonText);
     });
 
+
+    // TODO: Change to observable so when user sign up and registers redirect it should emit new value  
     this.name = this.authenticationService.getUser()
-      .map((user: any) => (typeof user.given_name !== 'undefined') ? user.given_name : null);
+      .map((user: any) => (typeof user.given_name !== 'undefined') ? `${user.given_name} ${user.family_name}` : null);
 
     // Optional strategy for refresh token through a scheduler.
     this.authenticationService.startupTokenRefresh();

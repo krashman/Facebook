@@ -15,11 +15,11 @@ namespace Facebook.WebApplication.Controllers
   [Route("api/[controller]")]
   public class UsersController : Controller
   {
-    private readonly UserManager<IdentityUser> _userManager;
-    private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
     private readonly IUserRepository _userRepository;
 
-    public UsersController(IUserRepository userRepository, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+    public UsersController(IUserRepository userRepository, SignInManager<User> signInManager, UserManager<User> userManager)
     {
       _userRepository = userRepository;
       _signInManager = signInManager;
@@ -44,7 +44,7 @@ namespace Facebook.WebApplication.Controllers
     {
       if (!ModelState.IsValid) return BadRequest();
 
-      var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+      var user = new User { UserName = model.Email, Email = model.Email };
       var result = await _userManager.CreateAsync(user, model.Password);
       if (!result.Succeeded) return new JsonResult(result);
 

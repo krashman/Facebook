@@ -8,9 +8,10 @@ using Facebook.Repository;
 namespace Facebook.Repository.Migrations
 {
     [DbContext(typeof(FacebookDatabaseContext))]
-    partial class FacebookDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20170620050717_Add user photo")]
+    partial class Adduserphoto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -30,10 +31,6 @@ namespace Facebook.Repository.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.SystemFunctions;
+using User = Facebook.Domain.User;
 
 namespace Facebook.WebApplication.Controllers
 {
@@ -16,11 +17,11 @@ namespace Facebook.WebApplication.Controllers
   //[Authorize(Policy = "Access Resources")]
   public class PostsController : Controller
   {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly ISocialInteractionsRepository _socialInteractionDocumentDatabaseRepository;
     private readonly IPostRepository _postRepository;
 
-    public PostsController(IPostRepository postRepository, UserManager<IdentityUser> userManager, ISocialInteractionsRepository socialInteractionDocumentDatabaseRepository)
+    public PostsController(IPostRepository postRepository, UserManager<User> userManager, ISocialInteractionsRepository socialInteractionDocumentDatabaseRepository)
     {
       _postRepository = postRepository;
       _userManager = userManager;
@@ -50,10 +51,10 @@ namespace Facebook.WebApplication.Controllers
     [HttpPost]
     public async Task<Document> Post([FromBody]Post value)
     {
-      var identityId = User.FindFirst("sub").Value;
+      var identityId = this.User.FindFirst("sub").Value;
       value.UserId = new Guid(identityId);
-      var identityUser = await _userManager.FindByIdAsync(identityId);
-      var claims = await _userManager.GetClaimsAsync(identityUser);
+      var User = await _userManager.FindByIdAsync(identityId);
+      var claims = await _userManager.GetClaimsAsync(User);
       var firstName = claims.First(x => x.Type == "given_name");
       var lastName = claims.First(x => x.Type == "family_name");
       value.CreatedBy = $"{firstName.Value} {lastName.Value}";

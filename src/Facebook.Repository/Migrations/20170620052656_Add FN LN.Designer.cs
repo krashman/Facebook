@@ -8,9 +8,10 @@ using Facebook.Repository;
 namespace Facebook.Repository.Migrations
 {
     [DbContext(typeof(FacebookDatabaseContext))]
-    partial class FacebookDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20170620052656_Add FN LN")]
+    partial class AddFNLN
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

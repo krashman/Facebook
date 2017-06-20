@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Facebook.Domain;
 using Facebook.Repository;
 using IdentityModel;
 using IdentityServer4;
@@ -22,11 +23,11 @@ namespace Facebook.IdentityProvider
 {
     public class IdentityWithAdditionalClaimsProfileService : IProfileService
     {
-        private readonly IUserClaimsPrincipalFactory<IdentityUser> _claimsFactory;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserClaimsPrincipalFactory<User> _claimsFactory;
+        private readonly UserManager<User> _userManager;
 
-        public IdentityWithAdditionalClaimsProfileService(UserManager<IdentityUser> userManager,
-            IUserClaimsPrincipalFactory<IdentityUser> claimsFactory)
+        public IdentityWithAdditionalClaimsProfileService(UserManager<User> userManager,
+            IUserClaimsPrincipalFactory<User> claimsFactory)
         {
             _userManager = userManager;
             _claimsFactory = claimsFactory;
@@ -101,7 +102,7 @@ namespace Facebook.IdentityProvider
             const string connection = @"Server=localhost;Database=Facebook;Trusted_Connection=True;";
             services.AddDbContext<FacebookDatabaseContext>(options => options.UseSqlServer(connection));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                     .AddEntityFrameworkStores<FacebookDatabaseContext>()
                     .AddDefaultTokenProviders();
 
@@ -132,7 +133,7 @@ namespace Facebook.IdentityProvider
                 .AddInMemoryClients(Config.GetClients())
                 .AddProfileService<IdentityWithAdditionalClaimsProfileService>()
 
-                .AddAspNetIdentity<IdentityUser>(); // IdentityServer4.AspNetIdentity.
+                .AddAspNetIdentity<User>(); // IdentityServer4.AspNetIdentity.
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

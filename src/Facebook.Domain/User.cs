@@ -1,19 +1,16 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Facebook.Domain
 {
-    public class User : Entity
+    public class User : IdentityUser
     {
+        public byte[] UserPhoto { get; set; }
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
-
-        public string Email { get; set; }
-        
+        [NotMapped]
         public string Password { get; set; }
-
-        public List<Post> Posts { get; set; }
-
-        public string Birthday { get; set; }
     }
 }
