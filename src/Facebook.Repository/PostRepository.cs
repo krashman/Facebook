@@ -30,30 +30,31 @@ namespace Facebook.Repository
 
         public override async Task<Document> CreateItemAsync(Post newPost)
         {
-            var postIdToFind = newPost.ParentId ?? newPost.Id;
+            await _socialInteractionsDocumentDatabaseRepository.CreateItemAsync(
+                new SocialInteractions
+                {
+                    PostId = newPost.Id,
+                    TotalComments = 0,
+                    TotalLikes = 0
+                });
+
+            // If this is from a child
             var socialInteractions =
-                await _socialInteractionsDocumentDatabaseRepository.GetItemsWhereAsync(z => z.PostId == postIdToFind);
+            await _socialInteractionsDocumentDatabaseRepository.GetItemsWhereAsync(itemFromDb => itemFromDb.PostId == newPost.ParentId.GetValueOrDefault());
+
             var socialInteraction = socialInteractions.FirstOrDefault();
+            //TODO: Just check if Post.SocialInteraction is null, then create it yah?
             if (socialInteraction != null)
             {
                 socialInteraction.TotalComments++;
                 await _socialInteractionsDocumentDatabaseRepository.UpdateItemAsync(socialInteraction.Id.ToString(),
                     socialInteraction);
-            }
-            else
-            {
-                socialInteraction = new SocialInteractions
-                {
-                    PostId = newPost.Id,
-                    TotalComments = 0,
-                    TotalLikes = 0
-                };
-                await _socialInteractionsDocumentDatabaseRepository.CreateItemAsync(socialInteraction);
 
             }
+
             return await base.CreateItemAsync(newPost);
         }
-        
+
         protected override string CollectionId { get; } = nameof(Post);
     }
 }

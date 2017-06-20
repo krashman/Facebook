@@ -5,7 +5,7 @@ export const routes: Routes = [
     { path: 'home', redirectTo: 'home' },
     { path: 'register', redirectTo: 'register' },
     { path: 'login', redirectTo: 'login' },
-    // { path: 'register', component: RegisterComponent }
+    { path: 'my-profile', redirectTo: 'my-profile' }
 ];
 
 export const AppRoutes = RouterModule.forRoot(routes);

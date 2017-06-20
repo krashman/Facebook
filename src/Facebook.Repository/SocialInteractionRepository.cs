@@ -20,7 +20,7 @@ namespace Facebook.Repository
 
         public async Task<SocialInteractions> GetItemByPostId(Guid postId)
         {
-            var socialInteractions = (await GetItemsWhereAsync(x => x.PostId == postId)).First();
+            var socialInteractions = (await GetItemsWhereAsync(x => x.PostId == postId)).FirstOrDefault();
             return socialInteractions;
         }
 

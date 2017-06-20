@@ -1,7 +1,7 @@
 <md-toolbar color="primary">
   <span>Facebook</span>
   <span style="flex: 1 1 auto"></span>
-  <span *ngIf="(signedIn | async) && (name | async)">Hey {{ name | async }}</span>
+  <span *ngIf="(signedIn | async) && (name | async)">Hey <a md-button routerLink='/my-profile'>{{ name | async }}</a></span>
   <button (click)="sign()" md-button>{{loginButtonText}}</button>
 </md-toolbar>
 <md-sidenav-container class="example-sidenav-fab-container">

@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './core/material.module';
 import { LoginModule } from './login/login.module';
 import { CoreModule } from './core/core.module';
+import { MyProfileModule } from './my-profile/my-profile.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CoreModule } from './core/core.module';
     HomeModule,
     RegisterModule,
     LoginModule,
+    MyProfileModule,
     MaterialModule
   ],
   providers: [],
