@@ -12,7 +12,7 @@ namespace Facebook.Repository
 {
     public interface IProfilePictureRepository
     {
-        Task UploadFile(string fileName, Stream fileStream);
+        Task UploadFile(Stream fileStream, string fileName, string formFileContentType);
     }
 
     public class ProfilePictureRepository : IProfilePictureRepository
@@ -24,7 +24,7 @@ namespace Facebook.Repository
             _applicationSettingsOptions = applicationSettingsOptions;
         }
 
-        public async Task UploadFile(string fileName, Stream fileStream)
+        public async Task UploadFile(Stream fileStream, string fileName, string formFileContentType)
         {
             // TODO: Move to appsettings.json
             try
@@ -34,13 +34,19 @@ namespace Facebook.Repository
                 // Create a blob client.
                 CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
-                // Get a reference to a container named "mycontainer."
-                CloudBlobContainer container = blobClient.GetContainerReference("mycontainer");
+                // Get a reference to a container named "profile-pictures."
+                CloudBlobContainer container = blobClient.GetContainerReference("profile-pictures");
+                
 
                 await container.CreateIfNotExistsAsync();
+                if (container.Properties.PublicAccess != BlobContainerPublicAccessType.Blob)
+                {
+                    await container.SetPermissionsAsync(new BlobContainerPermissions { PublicAccess = BlobContainerPublicAccessType.Blob });
+                }
 
-                // Get a reference to a blob named "myblob".
+                // Get a reference to a blob named "profile-pictures".
                 CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+                blockBlob.Properties.ContentType = formFileContentType;
                 await blockBlob.UploadFromStreamAsync(fileStream);
             }
             catch (Exception e)

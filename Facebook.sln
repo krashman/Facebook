@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.7
+VisualStudioVersion = 15.0.26608.5
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.Domain", "src\Face
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.Repository", "src\Facebook.Repository\Facebook.Repository.csproj", "{C4EA1DA3-E6D2-4025-9C9D-A604D2CF5A7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.IdentityProvider", "src\Facebook.IdentityProvider\Facebook.IdentityProvider.csproj", "{5B5543D0-6206-419E-B366-7868FC652938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.IdentityProvider", "src\Facebook.IdentityProvider\Facebook.IdentityProvider.csproj", "{5B5543D0-6206-419E-B366-7868FC652938}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facebook.Functions", "src\Facebook.Functions\Facebook.Functions.csproj", "{BD43879B-A452-4A2C-BCAC-573B0E988661}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +86,18 @@ Global
 		{5B5543D0-6206-419E-B366-7868FC652938}.Release|x64.Build.0 = Release|Any CPU
 		{5B5543D0-6206-419E-B366-7868FC652938}.Release|x86.ActiveCfg = Release|Any CPU
 		{5B5543D0-6206-419E-B366-7868FC652938}.Release|x86.Build.0 = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x64.Build.0 = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x86.Build.0 = Debug|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|x64.ActiveCfg = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|x64.Build.0 = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|x86.ActiveCfg = Release|Any CPU
+		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

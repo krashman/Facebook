@@ -45,7 +45,8 @@ namespace Facebook.WebApplication.Controllers
         {
           await formFile.CopyToAsync(stream);
           stream.Position = 0;
-          await _profilePictureRepository.UploadFile(formFile.FileName, stream);
+          await _profilePictureRepository.UploadFile(stream,
+          formFile.FileName, formFile.ContentType);
         }
       }
     }
