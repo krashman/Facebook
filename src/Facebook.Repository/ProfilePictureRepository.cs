@@ -12,7 +12,7 @@ namespace Facebook.Repository
 {
     public interface IProfilePictureRepository
     {
-        Task UploadFile(Stream fileStream, string fileName, string formFileContentType);
+        Task UploadFile(Stream fileStream, string fileName, string formFileContentType, string identityId);
     }
 
     public class ProfilePictureRepository : IProfilePictureRepository
@@ -24,7 +24,7 @@ namespace Facebook.Repository
             _applicationSettingsOptions = applicationSettingsOptions;
         }
 
-        public async Task UploadFile(Stream fileStream, string fileName, string formFileContentType)
+        public async Task UploadFile(Stream fileStream, string fileName, string formFileContentType, string identityId)
         {
             // TODO: Move to appsettings.json
             try
@@ -47,6 +47,7 @@ namespace Facebook.Repository
                 // Get a reference to a blob named "profile-pictures".
                 CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
                 blockBlob.Properties.ContentType = formFileContentType;
+                blockBlob.Metadata.Add("UserId", identityId);
                 await blockBlob.UploadFromStreamAsync(fileStream);
             }
             catch (Exception e)

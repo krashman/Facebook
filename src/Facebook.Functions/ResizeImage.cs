@@ -6,9 +6,21 @@ using System.Net.Http.Headers;
 using System.Text;
 using System;
 using System.Drawing;
+using Microsoft.WindowsAzure.Storage.Blob;
+using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage.Table;
+using Newtonsoft.Json.Linq;
+using Microsoft.Azure.Documents.Client;
 
 namespace Facebook.Functions
 {
+    public class ProfilePictureUrl
+    {
+        public string UserId { get; set; }
+
+        public string Url { get; set; }
+    }
+
     public static class ResizeImage
     {
         // Replace the subscriptionKey string value with your valid subscription key.
@@ -16,13 +28,21 @@ namespace Facebook.Functions
         const string uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/generateThumbnail";
 
 
-        [FunctionName("BlobTriggerCSharp")]
-        public static void Run([BlobTrigger("profile-pictures/{name}")]Stream myBlob, string name, TraceWriter log)
+        [FunctionName(nameof(ResizeImage))]
+        public static async Task<string> RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob, [DocumentDB(databaseName: "Facebook", collectionName: "ResizedProfilePictures", CreateIfNotExists = true)] IAsyncCollector<ProfilePictureUrl> client, string name, TraceWriter log)
         {
 
+            using (var stream = new MemoryStream())
+            {
+                await myBlob.DownloadToStreamAsync(stream);
+                stream.Position = 0;
 
-            log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {myBlob.Length} Bytes");
-            SendThumbnailRequest(myBlob, log);
+                log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {stream.Length} Bytes");
+                SendThumbnailRequest(stream, log);
+
+                await client.AddAsync(new ProfilePictureUrl() { Url = myBlob.Uri.AbsoluteUri, UserId = myBlob.Metadata["UserId"] });
+            }
+            return "hello";
         }
 
         static async void SendThumbnailRequest(Stream image, TraceWriter log)

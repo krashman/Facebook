@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Facebook.WebApplication.Controllers
 {
   [Route("api/[controller]")]
+  [Authorize(Policy = "Access Resources")]
   public class MyProfileController : Controller
   {
     private readonly IProfilePictureRepository _profilePictureRepository;
@@ -45,8 +46,8 @@ namespace Facebook.WebApplication.Controllers
         {
           await formFile.CopyToAsync(stream);
           stream.Position = 0;
-          await _profilePictureRepository.UploadFile(stream,
-          formFile.FileName, formFile.ContentType);
+          var identityId = this.User.FindFirst("sub").Value;
+          await _profilePictureRepository.UploadFile(stream, formFile.FileName, formFile.ContentType, identityId);
         }
       }
     }
