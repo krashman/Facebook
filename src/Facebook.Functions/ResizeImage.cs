@@ -29,23 +29,23 @@ namespace Facebook.Functions
 
 
         [FunctionName(nameof(ResizeImage))]
-        public static async Task<string> RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob, [DocumentDB(databaseName: "Facebook", collectionName: "ResizedProfilePictures", CreateIfNotExists = true)] IAsyncCollector<ProfilePictureUrl> client, string name, TraceWriter log)
+        public static async Task RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob,  string name, [DocumentDB(databaseName: "Facebook", collectionName: "ResizedProfilePictures", CreateIfNotExists = true)] IAsyncCollector<ProfilePictureUrl> client,[Blob("resized-profile-pictures", FileAccess.ReadWrite)] CloudBlobContainer resizedBlob, TraceWriter log)
         {
-
+            var test = resizedBlob.GetBlockBlobReference(name);
+            test.Properties.ContentType = myBlob.Properties.ContentType;
             using (var stream = new MemoryStream())
             {
                 await myBlob.DownloadToStreamAsync(stream);
                 stream.Position = 0;
 
                 log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {stream.Length} Bytes");
-                SendThumbnailRequest(stream, log);
+                SendThumbnailRequest(stream, log, test);
 
                 await client.AddAsync(new ProfilePictureUrl() { Url = myBlob.Uri.AbsoluteUri, UserId = myBlob.Metadata["UserId"] });
             }
-            return "hello";
         }
 
-        static async void SendThumbnailRequest(Stream image, TraceWriter log)
+        static async void SendThumbnailRequest(Stream image, TraceWriter log, CloudBlockBlob blob)
         {
             HttpClient client = new HttpClient();
 
@@ -83,11 +83,12 @@ namespace Facebook.Functions
 
                         // Get the image data.
                         byte[] thumbnailImageData = await response.Content.ReadAsByteArrayAsync();
-                        using (var ms = new MemoryStream(thumbnailImageData))
-                        {
-                            var blah = Image.FromStream(ms);
-                            blah.Save("test.png");
-                        }
+                        await blob.UploadFromByteArrayAsync(thumbnailImageData,0,thumbnailImageData.Length);
+                        //using (var ms = new MemoryStream(thumbnailImageData))
+                        //{
+                        //    var blah = Image.FromStream(ms);
+                        //    blah.Save("test.png");
+                        //}
                     }
                     else
                     {

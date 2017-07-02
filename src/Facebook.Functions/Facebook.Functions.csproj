@@ -21,6 +21,9 @@
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="ResizeImage\function.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="visionapi.key">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

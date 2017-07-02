@@ -1,0 +1,27 @@
+﻿{
+  "bindings": [
+    {
+      "type": "blobTrigger",
+      "path": "profile-pictures/{name}",
+      "direction": "in",
+      "name": "myBlob"
+    },
+    {
+      "type": "documentDB",
+      "databaseName": "Facebook",
+      "collectionName": "ResizedProfilePictures",
+      "createIfNotExists": true,
+      "direction": "out",
+      "name": "client"
+    },
+    {
+      "type": "blob",
+      "path": "resized-profile-pictures",
+      "direction": "out",
+      "name": "resizedBlob"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "..\\Facebook.Functions.dll",
+  "entryPoint": "Facebook.Functions.ResizeImage.RunAsync"
+}
