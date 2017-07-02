@@ -10,16 +10,16 @@ using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 namespace Facebook.Repository
 {
-    public interface IProfilePictureRepository
+    public interface IProfilePictureRepository : IDocumentDatabaseRepository<ProfilePictureUrl>
     {
         Task UploadFile(Stream fileStream, string fileName, string formFileContentType, string identityId);
     }
 
-    public class ProfilePictureRepository : IProfilePictureRepository
+    public class ProfilePictureRepository : DocumentDatabaseRepository<ProfilePictureUrl>, IProfilePictureRepository
     {
         private readonly IOptions<ApplicationSettings> _applicationSettingsOptions;
 
-        public ProfilePictureRepository(IOptions<ApplicationSettings> applicationSettingsOptions)
+        public ProfilePictureRepository(IOptions<ApplicationSettings> applicationSettingsOptions) : base(applicationSettingsOptions)
         {
             _applicationSettingsOptions = applicationSettingsOptions;
         }
@@ -56,5 +56,7 @@ namespace Facebook.Repository
                 throw;
             }
         }
+
+        protected override string CollectionId { get; } = nameof(ProfilePictureUrl);
     }
 }

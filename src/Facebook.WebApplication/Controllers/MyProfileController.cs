@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Facebook.Domain;
 using Facebook.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,9 +27,11 @@ namespace Facebook.WebApplication.Controllers
 
     // GET api/values/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<ProfilePictureUrl> Get(int id)
     {
-      return "value";
+      var identityId = this.User.FindFirst("sub").Value;
+      var profile = await _profilePictureRepository.GetItemsWhereAsync(url => url.UserId == identityId);
+      return profile.FirstOrDefault();
     }
 
 
