@@ -1,5 +1,7 @@
 <p>
   my-profile works!
 </p>
+{{(myProfile | async)?.url}}
+<img src="{{(myProfile | async)?.url}}">
 <input type="file" uploadFile (file)="addUpload($event)" #uploadProfilePicture hidden>
 <button (click)="uploadProfilePicture.click()" md-raised-button color="accent">Upload profile picture</button>

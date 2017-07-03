@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ProfileServiceApi } from '../apis';
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
@@ -7,11 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyProfileComponent implements OnInit {
 
-  constructor() { }
+  constructor(private profileServiceApi: ProfileServiceApi) { }
+  myProfile: any;
 
   ngOnInit() {
+    this.myProfile = this.profileServiceApi.getMyProfile();
   }
-  
+
   addUpload(event) {
     console.log(event);
   }
