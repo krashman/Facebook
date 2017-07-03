@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Facebook.Domain
 {
-    public class ProfilePictureUrl
+    public class UserProfile
     {
         public string UserId { get; set; }
 

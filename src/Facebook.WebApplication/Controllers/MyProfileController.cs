@@ -15,22 +15,22 @@ namespace Facebook.WebApplication.Controllers
   [Authorize(Policy = "Access Resources")]
   public class MyProfileController : Controller
   {
-    private readonly IProfilePictureRepository _profilePictureRepository;
+    private readonly IUserProfileRepository _userProfileRepository;
 
 
-    public MyProfileController(IProfilePictureRepository profilePictureRepository)
+    public MyProfileController(IUserProfileRepository userProfileRepository)
     {
-      _profilePictureRepository = profilePictureRepository;
+      _userProfileRepository = userProfileRepository;
     }
 
 
 
     // GET api/values/5
-    [HttpGet("{id}")]
-    public async Task<ProfilePictureUrl> Get(int id)
+    [HttpGet]
+    public async Task<UserProfile> Get()
     {
       var identityId = this.User.FindFirst("sub").Value;
-      var profile = await _profilePictureRepository.GetItemsWhereAsync(url => url.UserId == identityId);
+      var profile = await _userProfileRepository.GetItemsWhereAsync(url => url.UserId == identityId);
       return profile.FirstOrDefault();
     }
 
@@ -51,7 +51,7 @@ namespace Facebook.WebApplication.Controllers
           await formFile.CopyToAsync(stream);
           stream.Position = 0;
           var identityId = this.User.FindFirst("sub").Value;
-          await _profilePictureRepository.UploadFile(stream, formFile.FileName, formFile.ContentType, identityId);
+          await _userProfileRepository.UploadFile(stream, formFile.FileName, formFile.ContentType, identityId);
         }
       }
     }

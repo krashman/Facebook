@@ -82,7 +82,7 @@ namespace Facebook.WebApplication
       services.Configure<ApplicationSettings>(Configuration.GetSection("AppSettings"));
       services.AddTransient<IDbService, DbService>();
       services.AddTransient<IPostRepository, PostRepository>();
-      services.AddTransient<IProfilePictureRepository, ProfilePictureRepository>();
+      services.AddTransient<IUserProfileRepository, UserProfileRepository>();
       services.AddTransient<IProfilePictureUrlRepository, ProfilePictureUrlRepository>();
       services.AddTransient<ISocialInteractionsRepository, SocialInteractionRepository>();
     }
