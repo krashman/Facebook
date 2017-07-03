@@ -11,14 +11,21 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage.Table;
 using Newtonsoft.Json.Linq;
 using Microsoft.Azure.Documents.Client;
+using Newtonsoft.Json;
+using System.Linq;
+using Microsoft.Azure.Documents;
 
 namespace Facebook.Functions
 {
-    public class ProfilePictureUrl
+    public class UserProfile 
     {
         public string UserId { get; set; }
 
         public string Url { get; set; }
+
+        // TODO: Json property no worky
+        [JsonProperty(PropertyName = "id")]
+        public string id { get; set; }
     }
 
     public static class ResizeImage
@@ -29,19 +36,39 @@ namespace Facebook.Functions
 
 
         [FunctionName(nameof(ResizeImage))]
-        public static async Task RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob,  string name, [DocumentDB(databaseName: "Facebook", collectionName: "ResizedProfilePictures", CreateIfNotExists = true)] IAsyncCollector<ProfilePictureUrl> client,[Blob("resized-profile-pictures", FileAccess.ReadWrite)] CloudBlobContainer resizedBlob, TraceWriter log)
+        public static async Task RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob, string name, [DocumentDB(databaseName: "Facebook", collectionName: "UserProfile", CreateIfNotExists = true)] DocumentClient client, [Blob("profile-pictures/{name}-168", FileAccess.ReadWrite)] CloudBlockBlob resizedBlob, TraceWriter log)
         {
-            var test = resizedBlob.GetBlockBlobReference(name);
-            test.Properties.ContentType = myBlob.Properties.ContentType;
+            myBlob.Metadata.TryGetValue("UserId", out string userId);
+
+            if (userId == null)
+            {
+                log.Info("Not processing blob. This is a resized image.");
+                return;
+            }
+
+            resizedBlob.Properties.ContentType = myBlob.Properties.ContentType;
             using (var stream = new MemoryStream())
             {
                 await myBlob.DownloadToStreamAsync(stream);
                 stream.Position = 0;
 
                 log.Info($"C# Blob trigger function Processed blob\n Name:{name} \n Size: {stream.Length} Bytes");
-                SendThumbnailRequest(stream, log, test);
+                SendThumbnailRequest(stream, log, resizedBlob);
 
-                await client.AddAsync(new ProfilePictureUrl() { Url = myBlob.Uri.AbsoluteUri, UserId = myBlob.Metadata["UserId"] });
+                
+                var profilePictureUrl = client.CreateDocumentQuery<UserProfile>(
+                    UriFactory.CreateDocumentCollectionUri("Facebook", "UserProfile"),
+                    new FeedOptions() { MaxItemCount = -1 }).Where(x => x.UserId == userId).AsEnumerable().FirstOrDefault();
+                if (profilePictureUrl != null)
+                {
+                    profilePictureUrl.Url = resizedBlob.Uri.AbsoluteUri;
+                    await client.ReplaceDocumentAsync(
+                    UriFactory.CreateDocumentUri("Facebook", "UserProfile", profilePictureUrl.id), profilePictureUrl);
+                }
+                else
+                {
+                    await client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri("Facebook", "UserProfile"), new UserProfile() { Url = resizedBlob.Uri.AbsoluteUri, UserId = userId });
+                }
             }
         }
 
@@ -53,7 +80,7 @@ namespace Facebook.Functions
             client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subscriptionKey);
 
             // Request parameters.
-            string requestParameters = "width=500&height=550&smartCropping=true";
+            string requestParameters = "width=168&height=168&smartCropping=true";
 
             // Assemble the URI for the REST API Call.
             string uri = uriBase + "?" + requestParameters;
@@ -83,7 +110,7 @@ namespace Facebook.Functions
 
                         // Get the image data.
                         byte[] thumbnailImageData = await response.Content.ReadAsByteArrayAsync();
-                        await blob.UploadFromByteArrayAsync(thumbnailImageData,0,thumbnailImageData.Length);
+                        await blob.UploadFromByteArrayAsync(thumbnailImageData, 0, thumbnailImageData.Length);
                         //using (var ms = new MemoryStream(thumbnailImageData))
                         //{
                         //    var blah = Image.FromStream(ms);
