@@ -32,11 +32,11 @@ namespace Facebook.Functions
     {
         // Replace the subscriptionKey string value with your valid subscription key.
         static string subscriptionKey = File.ReadAllText("visionapi.key");
-        const string uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/generateThumbnail";
+        const string uriBase = "https://eastus2.api.cognitive.microsoft.com/vision/v1.0/generateThumbnail";
 
 
         [FunctionName(nameof(ResizeImage))]
-        public static async Task RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob, string name, [DocumentDB(databaseName: "Facebook", collectionName: "UserProfile", CreateIfNotExists = true)] DocumentClient client, [Blob("profile-pictures/{name}-168", FileAccess.ReadWrite)] CloudBlockBlob resizedBlob, TraceWriter log)
+        public static async Task RunAsync([BlobTrigger("profile-pictures/{name}")] CloudBlockBlob myBlob, string name, [DocumentDB(databaseName: "Facebook", collectionName: "UserProfile", CreateIfNotExists = true)] DocumentClient client, [Blob("profile-pictures/resized-{name}", FileAccess.ReadWrite)] CloudBlockBlob resizedBlob, TraceWriter log)
         {
             myBlob.Metadata.TryGetValue("UserId", out string userId);
 

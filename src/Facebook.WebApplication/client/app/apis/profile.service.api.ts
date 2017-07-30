@@ -23,7 +23,7 @@ export class ProfileServiceApi {
       });
   }
 
-public getMyProfileWithHttpInfo(extraHttpRequestParams?: any): Observable<Response> {
+  public getMyProfileWithHttpInfo(extraHttpRequestParams?: any): Observable<Response> {
     const path = environment.API_ENDPOINT + `/api/myprofile`;
 
     let headers = new Headers(this.defaultHeaders.toJSON());
@@ -48,5 +48,39 @@ public getMyProfileWithHttpInfo(extraHttpRequestParams?: any): Observable<Respon
     }
 
     return this.http.request(path, requestOptions);
+  }
+
+
+  public uploadProfilePicture(file: File, extraHttpRequestParams?: any): Observable<Response> {
+
+    const path = environment.API_ENDPOINT + `/api/myprofile`;
+
+    let headers = new Headers(this.defaultHeaders.toJSON());
+
+    // to determine the Accept header
+    let produces: string[] = [
+      'application/json',
+      'application/xml'
+    ];
+
+    let formData = new FormData();
+    formData.append('files', file);
+
+
+    headers.set('Authorization', 'Bearer ' + Helpers.getToken('id_token'));
+
+    let requestOptions: RequestOptionsArgs = new RequestOptions({
+      method: RequestMethod.Post,
+      headers: headers,
+      body: formData
+    });
+
+    // https://github.com/swagger-api/swagger-codegen/issues/4037
+    if (extraHttpRequestParams) {
+      requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+    }
+
+    return this.http.request(path, requestOptions);
+
   }
 }
