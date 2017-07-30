@@ -16,7 +16,7 @@ export class MyProfileComponent implements OnInit {
 
   addUpload(event) {
     this.profileServiceApi.uploadProfilePicture(event)
-      .subscribe(x => x);
+      .subscribe(x => this.myProfile = this.profileServiceApi.getMyProfile());
     console.log(event);
   }
 
