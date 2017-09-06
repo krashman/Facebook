@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <PreBuildEvent></PreBuildEvent>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="clientx\**" />

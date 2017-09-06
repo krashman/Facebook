@@ -1,14 +1,11 @@
 <md-toolbar color="primary">
-  <span>Facebook</span>
+  <span routerLink='/'>Facebook</span>
   <span style="flex: 1 1 auto"></span>
   <span *ngIf="(signedIn | async) && (name | async)">Hey <a md-button routerLink='/my-profile'>{{ name | async }}</a></span>
   <button (click)="sign()" md-button>{{loginButtonText}}</button>
 </md-toolbar>
 <md-sidenav-container class="example-sidenav-fab-container">
   <md-sidenav #sidenav mode="side" opened="true">
-    <button md-mini-fab class="example-fab" (click)="sidenav.toggle()">
-      <md-icon>add</md-icon>
-    </button>
     <div class="example-scrolling-content">
       Lorem ipsum dolor sit amet, pede a libero aenean phasellus, lectus metus sint ut risus, fusce vel in pellentesque. Nisl rutrum
       etiam morbi consectetuer tempor magna, aenean nullam nunc id, neque vivamus interdum sociis nulla scelerisque sem,
@@ -20,4 +17,7 @@
     </div>
   </md-sidenav>
   <router-outlet></router-outlet>
+  <button md-mini-fab class="sidebar-fab-button" (click)="sidenav.toggle()">
+    <md-icon>add</md-icon>
+  </button>
 </md-sidenav-container>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26608.5
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}"
 EndProject
@@ -26,7 +26,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{A17BDE59-0458-46A7-8F3D-0E70699E4AA6}.Debug|x64.Build.0 = Debug|Any CPU
@@ -87,7 +86,6 @@ Global
 		{5B5543D0-6206-419E-B366-7868FC652938}.Release|x86.ActiveCfg = Release|Any CPU
 		{5B5543D0-6206-419E-B366-7868FC652938}.Release|x86.Build.0 = Release|Any CPU
 		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x64.Build.0 = Debug|Any CPU
 		{BD43879B-A452-4A2C-BCAC-573B0E988661}.Debug|x86.ActiveCfg = Debug|Any CPU
