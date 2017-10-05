@@ -8,7 +8,7 @@ namespace Facebook.Repository
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly FacebookDatabaseContext databaseContext;
-        private readonly DbSet<T> entities;
+        protected readonly DbSet<T> entities;
         private string errorMessage = string.Empty;
 
         public Repository(FacebookDatabaseContext databaseContext)

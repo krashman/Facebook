@@ -8,6 +8,10 @@ using Facebook.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using IdentityModel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Facebook.WebApplication.Controllers
 {
@@ -16,11 +20,15 @@ namespace Facebook.WebApplication.Controllers
   public class MyProfileController : Controller
   {
     private readonly IUserProfileRepository _userProfileRepository;
+    private readonly IIdentityUserClaimRepository _identityUserClaimRepository;
+    private readonly UserManager<User> _userManager;
 
 
-    public MyProfileController(IUserProfileRepository userProfileRepository)
+    public MyProfileController(IUserProfileRepository userProfileRepository, IIdentityUserClaimRepository identityUserClaimRepository, UserManager<User> userManager)
     {
+      _userManager = userManager;
       _userProfileRepository = userProfileRepository;
+      _identityUserClaimRepository = identityUserClaimRepository;
     }
 
 
@@ -32,6 +40,19 @@ namespace Facebook.WebApplication.Controllers
       var identityId = this.User.FindFirst("sub").Value;
       var profile = await _userProfileRepository.GetItemsWhereAsync(url => url.UserId == identityId);
       return profile.FirstOrDefault();
+    }
+
+
+    [HttpPut]
+    public IActionResult Put([FromBody] IDictionary<string, string> model)
+    {
+      var identityId = this.User.FindFirst("sub").Value;
+      foreach (var claim in model)
+      {
+        _identityUserClaimRepository.UpdateClaimGiven(identityId, claim.Key, claim.Value);
+      }
+
+      return Ok();
     }
 
 
@@ -67,5 +88,10 @@ namespace Facebook.WebApplication.Controllers
     public void Delete(int id)
     {
     }
+  }
+
+  public class Sample
+  {
+    public Dictionary<string, string> Claims { get; set; }
   }
 }

@@ -81,6 +81,7 @@ namespace Facebook.WebApplication
       services.AddSingleton<IUserRepository, UserRepository>();
       services.Configure<ApplicationSettings>(Configuration.GetSection("AppSettings"));
       services.AddTransient<IDbService, DbService>();
+      services.AddSingleton<IIdentityUserClaimRepository, IdentityUserClaimRepository>();
       services.AddTransient<IPostRepository, PostRepository>();
       services.AddTransient<IUserProfileRepository, UserProfileRepository>();
       services.AddTransient<IProfilePictureUrlRepository, ProfilePictureUrlRepository>();
