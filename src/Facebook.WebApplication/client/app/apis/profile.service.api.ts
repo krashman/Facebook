@@ -12,6 +12,45 @@ export class ProfileServiceApi {
 
   constructor(protected http: Http) { }
 
+  public updateProfile(extraHttpRequestParams?: any): Observable<UserProfile> {
+    return this.updateProfileWithHttpInfo(extraHttpRequestParams)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          // return response.json();
+        }
+      });
+  }
+
+  public updateProfileWithHttpInfo(body: {},extraHttpRequestParams?: any): Observable<Response> {
+    const path = environment.API_ENDPOINT + `/api/myprofile`;
+
+    let headers = new Headers(this.defaultHeaders.toJSON());
+
+    // to determine the Accept header
+    let produces: string[] = [
+      'application/json',
+      'application/xml'
+    ];
+
+
+    headers.set('Authorization', 'Bearer ' + Helpers.getToken('id_token'));
+
+    let requestOptions: RequestOptionsArgs = new RequestOptions({
+      method: RequestMethod.Put,
+      headers: headers,
+      body: body
+    });
+
+    // https://github.com/swagger-api/swagger-codegen/issues/4037
+    if (extraHttpRequestParams) {
+      requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+    }
+
+    return this.http.request(path, requestOptions);
+  }
+
   public getMyProfile(extraHttpRequestParams?: any): Observable<UserProfile> {
     return this.getMyProfileWithHttpInfo(extraHttpRequestParams)
       .map((response: Response) => {

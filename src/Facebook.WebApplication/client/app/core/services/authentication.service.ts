@@ -265,7 +265,7 @@ export class AuthenticationService {
     /**
      * Calls UserInfo endpoint to retrieve user's data.
      */
-    private getUserInfo(): void {
+    public getUserInfo(): void {
         if (this.tokenNotExpired()) {
             this.authHttp.get(environment.USERINFO_ENDPOINT)
                 .subscribe(

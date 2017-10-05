@@ -1,6 +1,18 @@
 <p>
   my-profile works!
 </p>
+
+<form>
+  <md-form-field>
+    <input [(ngModel)]="firstName" name="firstName" mdInput placeholder="First name">
+  </md-form-field>
+  <md-form-field>
+    <input [(ngModel)]="lastName" name="lastName" mdInput placeholder="Last Name">
+  </md-form-field>
+</form>
+
+<button md-raised-button (click)="save()">Save</button>
+
 {{(myProfile | async)?.url}}
 <img src="{{(myProfile | async)?.url}}">
 <input type="file" uploadFile (file)="addUpload($event)" #uploadProfilePicture hidden>
