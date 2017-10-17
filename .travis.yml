@@ -25,6 +25,7 @@ cache:
     - $HOME/.pub-cache
 before_script:
   - chmod a+x ./build.sh
-  
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 script:
   - ./build.sh --quiet verify
