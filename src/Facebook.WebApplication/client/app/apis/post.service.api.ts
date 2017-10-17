@@ -43,6 +43,18 @@ export class PostServiceApi {
       });
   }
 
+
+  public getAllMyPosts(userId: string, extraHttpRequestParams?: any): Observable<Array<Post>> {
+    return this.getAllPostsWithHttpInfo(null, userId, extraHttpRequestParams)
+      .map((response: Response) => {
+        if (response.status === 204) {
+          return undefined;
+        } else {
+          return response.json();
+        }
+      });
+  }
+
   public addPostWithHttpInfo(body?: Post, extraHttpRequestParams?: any): Observable<Response> {
     const path = environment.API_ENDPOINT + `/api/posts`;
 
@@ -78,12 +90,15 @@ export class PostServiceApi {
     return this.http.request(path, requestOptions);
   }
 
-  public getAllPostsWithHttpInfo(parentId?: string, extraHttpRequestParams?: any): Observable<Response> {
+  public getAllPostsWithHttpInfo(parentId?: string, userId?: string, extraHttpRequestParams?: any): Observable<Response> {
     const path = environment.API_ENDPOINT + `/api/posts`;
 
     let queryParameters = new URLSearchParams();
     if (parentId) {
       queryParameters.set('parentId', parentId);
+    }
+    if (userId) {
+      queryParameters.set('userId', userId);
     }
     let headers = new Headers(this.defaultHeaders.toJSON());
 

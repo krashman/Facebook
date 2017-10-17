@@ -31,8 +31,16 @@ namespace Facebook.WebApplication.Controllers
 
     // GET api/values
     [HttpGet]
-    public async Task<IEnumerable<Post>> Get([FromQuery]string parentId, string comment)
+    public async Task<IEnumerable<Post>> Get([FromQuery]string parentId, [FromQuery]string userId)
     {
+      if (!string.IsNullOrEmpty(parentId) && !string.IsNullOrEmpty(userId))
+      {
+        return await _postRepository.GetItemsWhereAsync(x => x.ParentId == new Guid(parentId) && x.UserId == new Guid(userId));
+      }
+      if (!string.IsNullOrEmpty(userId))
+      {
+        return await _postRepository.GetItemsWhereAsync(x => x.UserId == new Guid(userId) && x.ParentId.IsNull());
+      }
       if (!string.IsNullOrEmpty(parentId))
       {
         return await _postRepository.GetItemsWhereAsync(x => x.ParentId == new Guid(parentId));
@@ -58,7 +66,7 @@ namespace Facebook.WebApplication.Controllers
       var firstName = claims.First(x => x.Type == "given_name");
       var lastName = claims.First(x => x.Type == "family_name");
       value.CreatedBy = $"{firstName.Value} {lastName.Value}";
-      
+
       return await _postRepository.CreateItemAsync(value);
     }
 

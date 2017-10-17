@@ -13,6 +13,8 @@
 
 <button md-raised-button (click)="save()">Save</button>
 
+<posts userId="{{authenticationService.userSubject.getValue().sub}}"></posts>
+
 {{(myProfile | async)?.url}}
 <img src="{{(myProfile | async)?.url}}">
 <input type="file" uploadFile (file)="addUpload($event)" #uploadProfilePicture hidden>

@@ -6,6 +6,7 @@ import { CoreModule } from '../core/core.module';
 import { ProfileServiceApi } from '../apis';
 import { MdInputModule, MdButtonModule } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { PostsModule } from '../posts/posts.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
     MdButtonModule,
     MdInputModule,
     MyProfileRoutingModule,
-    CoreModule
+    CoreModule,
+    PostsModule
   ],
   declarations: [MyProfileComponent],
   providers: [ProfileServiceApi]

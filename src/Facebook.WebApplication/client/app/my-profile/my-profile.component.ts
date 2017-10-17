@@ -9,9 +9,10 @@ import { AuthenticationService } from '../core';
 export class MyProfileComponent implements OnInit {
   firstName: string;
   lastName: string;
-
-  constructor(private profileServiceApi: ProfileServiceApi, private authenticationService: AuthenticationService) { }
   myProfile: any;
+
+  constructor(private profileServiceApi: ProfileServiceApi, public authenticationService: AuthenticationService) {
+  }
 
   ngOnInit() {
     this.myProfile = this.profileServiceApi.getMyProfile();
